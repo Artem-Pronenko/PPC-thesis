@@ -1,0 +1,67 @@
+@import '~@csstools/normalize.css'
+@import "constants"
+@import "fonts"
+
+*
+  box-sizing: border-box
+  font-family: 'Exo 2', sans-serif
+
+body
+  margin: 0
+  padding: 0
+  background-color: $background-page
+  color: $black
+html
+  font-size: 16px
+
+ul
+  margin: 0
+  padding: 0
+  list-style: none
+
+a
+  color: inherit
+
+button, .button
+  cursor: pointer
+  border: none
+  padding: 0.81rem 1.5rem
+  border-radius: $main-border
+  background-color: $black
+  color: $white
+  font-size: 1rem
+
+input
+  background-color: $primary-bg
+  border: none
+
+img
+  width: 100%
+
+a
+  text-decoration: none
+
+
+@media (min-width: 1900px)
+  html
+    font-size: 20px
+@media (min-width: 2560px)
+  html
+    font-size: 25px
+
+@media (max-width: 1200px)
+  html
+    font-size: 14px
+
+@media (max-width: 992px)
+  html
+    font-size: 12px
+
+@import "app"
+@import "navbar"
+@import "pages/auth_page"
+@import "search_input"
+@import "pages/home"
+@import "create_test_card"
+@import "pages/create_test"
+@import "modal"

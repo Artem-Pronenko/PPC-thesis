@@ -1,0 +1,65 @@
+@import "constants"
+$input-icon-size: 0.9375rem
+
+.search-form
+  margin-right: 10px
+  position: relative
+  width: 18.75rem
+  background: $black
+  border-radius: 4px
+  &::before
+    content: ''
+    width: $input-icon-size
+    height: $input-icon-size
+    display: block
+    background-image: url('../assets/icon/search.svg')
+    background-repeat: no-repeat
+    background-size: $input-icon-size
+    background-position: center
+    position: absolute
+    z-index: 2
+    top: 50%
+    left: 5px
+    transform: translateY(-50%)
+  &-button
+    display: none
+    position: absolute
+    font-size: 1rem
+    top: 0
+    right: 0
+    font-weight: bold
+    background: $black
+    color: $white
+    border-radius: 0 4px 4px 0
+    padding-top: 0
+    padding-bottom: 0
+
+.search-input, .search-form-button
+  height: 2.5rem
+  border: 0
+
+.search-input
+  height: 2.5rem
+  outline: 0
+  width: 100%
+  font-size: 1rem
+  background: $white
+  padding: 0 0.2rem 0 1.3rem
+  border-radius: 4px
+  appearance: none
+  transition: all .3s cubic-bezier(0, 0, 0.43, 1.49)
+  transition-property: width, border-radius
+  z-index: 1
+  position: relative
+
+
+.search-input:not(:placeholder-shown)
+  border-radius: 4px 0 0 4px
+  width: calc(100% - 4.375rem)
+
+  + .search-form-button
+    display: block
+
+@media(max-width: 992px)
+  .search-form
+    width: 12.5rem

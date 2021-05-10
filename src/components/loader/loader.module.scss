@@ -1,0 +1,97 @@
+.ldio1 {
+  left: 0;
+  top: 38px;
+  animation-delay: 0s !important;
+}
+
+.ldio2 {
+  left: 80px;
+  top: 38px;
+  animation-delay: 0.13157894736842105s !important;
+}
+
+.ldio3 {
+  right: 0;
+  top: 38px;
+  animation-delay: 0.2631578947368421s !important;
+}
+
+.ldio4 {
+  left: 38px;
+  top: 80px;
+  animation-delay: 0.9210526315789473s !important;
+}
+
+.ldio5 {
+  left: 122px;
+  top: 80px;
+  animation-delay: 0.3947368421052631s !important;
+}
+
+.ldio6 {
+  left: 0;
+  top: 122px;
+  animation-delay: 0.7894736842105262s !important;
+}
+
+.ldio7 {
+  left: 80px;
+  top: 122px;
+  animation-delay: 0.6578947368421052s !important;
+}
+
+.ldio8 {
+  right: 0;
+  top: 122px;
+  animation-delay: 0.5263157894736842s !important;
+}
+
+@keyframes ldioAnimation {
+  0% {
+    background: #000
+  }
+  12.5% {
+    background: #fff
+  }
+  12.625% {
+    background: #fff
+  }
+  100% {
+    background: #000
+  }
+}
+
+.ldioBg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #000;
+  width: 100%;
+  height: 100%;
+}
+
+.ldioWrapper div {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #fff;
+  animation: ldioAnimation 1.0526315789473684s linear infinite;
+  box-sizing: content-box;
+}
+
+.ldioBg {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.ldioWrapper {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

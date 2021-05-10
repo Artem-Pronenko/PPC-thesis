@@ -1,0 +1,135 @@
+@import "../constants"
+
+$banner-height: 10.625rem
+$banner-margin-top: 20px
+$max-width-left-content: 39.75rem
+$user-button-avatar-size: 2.5rem
+
+.home
+  align-items: flex-start
+  padding-top: 10px
+
+.user
+  &-button
+    cursor: pointer
+    +flex-center
+
+    &__icon
+      width: 14px
+
+    &__avatar
+      width: $user-button-avatar-size
+      height: $user-button-avatar-size
+      overflow: hidden
+      border-radius: $main-border
+      margin-right: 10px
+
+      & img
+        width: $user-button-avatar-size
+        height: $user-button-avatar-size
+        object-fit: cover
+
+.banner
+  max-width: $max-width-left-content
+  width: 100%
+  +flex-between
+  padding: 0 15px
+  position: relative
+  height: $banner-height
+  margin-top: $banner-margin-top
+  background-color: $primary-bg
+  border-radius: $main-border
+
+  &__title
+    font-size: 1.7rem
+    margin-top: 0
+
+  &__image
+    position: absolute
+    bottom: -4px
+    right: 30px
+    width: 11.25rem
+
+.test
+  &-list
+    max-width: $max-width-left-content
+    overflow-y: scroll
+    max-height: 60vh
+    overscroll-behavior: none
+    -ms-overflow-style: none
+    overflow: -moz-scrollbars-none
+
+    &::-webkit-scrollbar
+      width: 0
+
+  &-item
+    +flex-between
+    padding: 0.8rem
+    margin-bottom: 13px
+    border-radius: $main-border
+    background-color: $primary-bg
+    flex-wrap: wrap
+
+    &__button
+      display: block
+      margin-left: auto
+
+    &__logo
+      margin-right: 5px
+
+    &__wrapper
+      +flex-between
+      margin-right: 1rem
+
+  &-text
+    &__name
+      margin: 3px 0
+
+.banners
+  +flex-between
+
+.test-info
+  width: 12.5rem
+  height: 6.25rem
+
+  &:first-child
+    margin-right: 20px
+
+  &__number
+    font-size: 4rem
+    font-weight: bold
+    margin-right: 0.3rem
+
+  &__title
+    font-weight: normal
+
+@media (max-width: 1200px)
+  .banners
+    flex-wrap: wrap
+  .test-info:first-child
+    margin-right: 0
+  .left-content
+    flex-basis: 100%
+
+@media (max-width: 992px)
+  .test
+    &-text
+      &__name, &__subtitle, &__end-time
+        display: block
+        margin-bottom: 10px
+
+  .banner
+    height: 7rem
+
+    &__image
+      display: none
+
+@media (max-width: 768px)
+  .banner
+    &__title
+      font-size: 1.1rem
+
+@media (max-height: 630px)
+  .test
+    &-list
+      max-height: 35vh
