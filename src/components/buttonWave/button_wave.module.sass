@@ -1,0 +1,63 @@
+.btn_wave:before, .btn_wave:after
+  opacity: 0
+  -webkit-transform-origin: center center 0
+  -moz-transform-origin: center center 0
+  -ms-transform-origin: center center 0
+  -o-transform-origin: center center 0
+  transform-origin: center center 0
+  -webkit-transition: all 0.2s ease-out
+  -moz-transition: all 0.2s ease-out
+  -o-transition: all 0.2s ease-out
+  transition: all 0.2s ease-out
+  position: absolute
+  backface-visibility: hidden
+  top: 0
+  left: 0
+  color: rgba(255, 255, 255, 1)
+
+.btn_wave
+  -webkit-transition: all 0.2s ease-out
+  -moz-transition: all 0.2s ease-out
+  -o-transition: all 0.2s ease-out
+  transition: all 0.2s ease-out
+  position: relative
+  color: white
+  line-height: 1em
+  border-radius: 13px
+  width: 100%
+
+  & > span
+    position: relative
+    z-index: 2
+    color: white
+
+  &:before
+    content: ''
+    opacity: 1
+    color: rgba(0, 0, 0, 0.5)
+    z-index: 1
+
+  &:hover
+    & > span
+      color: black
+
+    &:after
+      opacity: 1
+      left: 0
+      width: 100%
+      z-index: 0
+
+  &_wrapper
+    border: 1px solid black
+    border-radius: 15px
+    width: 100%
+
+.btn_wave:after
+  content: ''
+  background: rgba(255, 255, 255, 1)
+  color: transparent
+  top: 0
+  left: 50%
+  width: 0
+  height: 100%
+  overflow: hidden

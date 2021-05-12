@@ -1,0 +1,30 @@
+$black: #000
+$white: #fff
+
+.form_radio_btn
+  display: inline-block
+
+.form_radio_btn input[type=radio]
+  display: none
+
+.form_radio_btn label
+  display: flex
+  justify-content: center
+  align-items: baseline
+  cursor: pointer
+  padding: 5px 15px
+  line-height: 34px
+  border: 1px solid $black
+  border-radius: 6px
+  user-select: none
+  transition: background .3s, color .3s
+
+.form_radio_btn input[type=radio]:checked + label
+  background: $black
+  color: $white
+
+.form_radio_btn input[type=radio]:checked + label > svg
+  fill: $white
+
+.form_radio_btn label:hover
+  color: $black

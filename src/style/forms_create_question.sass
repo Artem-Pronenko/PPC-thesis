@@ -1,0 +1,38 @@
+@import "constants"
+
+.form
+  &-create-question
+    width: 70%
+    margin: auto
+
+    &__submit
+      width: 100%
+
+    &__variants
+      & div
+        margin-right: 10px
+    & img
+      min-width: 20px
+
+    &__hr
+      margin: 30px auto
+      width: 50%
+
+    &__group
+      +flex-between
+      align-items: flex-end
+      margin-bottom: 15px
+
+.create-question-modal
+  padding: 15px 0
+
+  &__title
+    margin-top: 0
+
+  &__subtitle
+    display: block
+    margin: 30px 0 15px 0
+
+@media (max-width: 992px)
+  .form-create-question
+    width: 95%
