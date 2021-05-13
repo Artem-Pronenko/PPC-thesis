@@ -1,9 +1,9 @@
-import React, {FC} from 'react'
+import React, {FC, MouseEvent} from 'react'
 import style from './button_wave.module.sass'
 
 interface ButtonWaveProps {
   text: string
-  onClick: () => void
+  onClick: (e: MouseEvent) => void
 }
 
 const ButtonWave: FC<ButtonWaveProps> = ({text, onClick}) => {
