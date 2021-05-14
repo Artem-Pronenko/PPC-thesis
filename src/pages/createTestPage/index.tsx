@@ -1,7 +1,9 @@
-import React, {FC, useEffect, useState} from 'react'
-import {RouteProps} from '../types/routeTypes'
-import Modal from '../components/Modal'
-import {Modal1, Modal2, Modal3, Modal4} from '../components/QuestionModalContent'
+import React, {FC, useState} from 'react'
+import {RouteProps} from 'types/routeTypes'
+import Modal from 'components/Modal'
+import {Modal2, Modal3} from 'components/QuestionModalContent'
+import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
+import QuestionModalYerOrNo from './components/QuestionModalYerOrNo'
 
 
 const CreateTestPage: FC<RouteProps> = ({match}) => {
@@ -12,7 +14,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
   const modalContent = [
     {
       id: 0,
-      content: Modal1()
+      content: QuestionModalOneAnswer()
     },
     {
       id: 1,
@@ -24,13 +26,9 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 3,
-      content: Modal4()
+      content: QuestionModalYerOrNo()
     }
   ]
-
-  useEffect(() => {
-    console.log(slug)
-  }, [])
 
   const showModal = (id: number) => {
     setActiveModal(true)

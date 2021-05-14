@@ -1,12 +1,12 @@
 import React, {useContext} from 'react'
 
-import TestList from '../components/TestList'
-import testSVG from '../assets/icon/default_test_logo.svg'
-import boySVG from '../assets/icon/boy.svg'
-import userAvatar from '../assets/image/user.png'
-import dropArrow from '../assets/icon/drop-arrow.svg'
-import {FirebaseContext} from '../index'
-import {FirebaseContextProps} from '../types/firebaseTypes'
+import TestList from 'components/TestList'
+import testSVG from 'assets/icons/default_test_logo.svg'
+import boySVG from 'assets/icons/boy.svg'
+import userAvatar from 'assets/image/user.png'
+import dropArrow from 'assets/icons/drop-arrow.svg'
+import {FirebaseContext} from 'index'
+import {FirebaseContextProps} from 'types/firebaseTypes'
 
 const testList = [
   {

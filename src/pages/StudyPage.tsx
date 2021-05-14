@@ -1,6 +1,6 @@
 import React from 'react'
 import CreateTestCards from '../components/CreateTestCards'
-import yesOrNoSVG from '../assets/icon/yes_or_no.svg'
+import yesOrNoSVG from '../assets/icons/yes_or_no.svg'
 
 const testList = [
   {

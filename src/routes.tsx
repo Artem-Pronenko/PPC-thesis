@@ -4,7 +4,7 @@ import HomePage from './pages/HomePage'
 import UserProfilePage from './pages/UserProfilePage'
 import AuthPage from './pages/AuthPage'
 import Study from './pages/StudyPage'
-import CreateTestPage from './pages/CreateTestPage'
+import CreateTestPage from './pages/createTestPage'
 
 export const Routes = () => {
   return (
