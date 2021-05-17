@@ -1,63 +1,20 @@
-import React, {MouseEvent, useEffect, useState} from 'react'
+import React, {Dispatch, FC, MouseEvent, SetStateAction, useEffect, useRef, useState} from 'react'
 import FloatingInput from 'components/floatingInput/FloatingInput'
-import RadioButton from 'components/radioButton/RadioButton'
 import ButtonWave from 'components/buttonWave/ButtonWave'
-import {ReactComponent as DoneSvg} from 'assets/icons/done.svg'
-import {ReactComponent as DeleteSVG} from 'assets/icons/delete.svg'
+import CreateField from './CreateField'
+import {INPUT_ANSWER, oneModalAnswerInitialValues, questionType} from 'constant/common'
+import {IAnswerOptions, ITestListItem} from 'types/questionsModalTypes'
 import {uid} from 'uid'
 
-interface ICreateField {
-  inputText?: string
-  inputId: string
-  radioButtonIdDone: string
-  radioButtonValue: string
-  deleteField: (id: string) => void
+interface QuestionModalOneAnswerProps {
+  setTestList: Dispatch<SetStateAction<ITestListItem[]>>
 }
 
-interface IInitialValuesModal1 {
-  questionInputName: string
-  inputVariantName: string
-  radioButtonDoneValue: string
-}
-
-
-const createField = ({
-                       inputText = 'Ответ',
-                       inputId,
-                       radioButtonIdDone,
-                       radioButtonValue,
-                       deleteField,
-                     }: ICreateField) => {
-
-  const buttonIdHtmlDone: string = uid()
-  const buttonIdHtmlDelete: string = uid()
-
-
-  return (
-    <div className="form-create-question__group" key={inputId}>
-      <FloatingInput name={inputText} placeholder={inputText} id={inputId}/>
-      <RadioButton id={`radio-done-${buttonIdHtmlDone}`} value={radioButtonValue} name={radioButtonIdDone}>
-        <DoneSvg/>
-      </RadioButton>
-      <RadioButton
-        onClick={() => deleteField(inputId)}
-        id={`radio-delete-${buttonIdHtmlDelete}`}
-        value={'delete'}
-      >
-        <DeleteSVG/>
-      </RadioButton>
-    </div>
-  )
-}
-
-const QuestionModalOneAnswer = () => {
+const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) => {
   const [inputGroup, setInputGroup] = useState<Array<JSX.Element>>([])
+  const [question, setQuestion] = useState<string>('')
+  const formRef = useRef<HTMLFormElement>(null)
 
-  const inputInitialValues: IInitialValuesModal1 = {
-    questionInputName: 'Вопрос с несколькими ответами',
-    inputVariantName: 'Ответ',
-    radioButtonDoneValue: 'done',
-  }
   const deleteField = (id: string) => {
     setInputGroup(prevState => prevState.length > 1
       ? prevState.filter(e => e.key !== id)
@@ -70,10 +27,10 @@ const QuestionModalOneAnswer = () => {
     const radioButtonValue: string = uid()
 
     setInputGroup(prevState => {
-      return [...prevState, createField({
+      return [...prevState, CreateField({
         inputId,
-        radioButtonIdDone: inputInitialValues.radioButtonDoneValue,
-        radioButtonValue: radioButtonValue,
+        radioButtonDoneName: oneModalAnswerInitialValues.radioButtonDoneValue,
+        radioButtonDoneId: radioButtonValue,
         deleteField,
       })]
     })
@@ -84,11 +41,47 @@ const QuestionModalOneAnswer = () => {
   }, [])
 
 
+  const submitHandler = () => {
+    const formElements: Element[] = Array.from(new Set(formRef?.current?.elements))
+    const answerOptions: Array<IAnswerOptions> = []
+    let answer: string = ''
+
+    formElements.map(item => {
+      if (!(item instanceof HTMLInputElement)) return
+
+      if (item.checked) answer = item.value
+
+      if (item.dataset.typeInput === INPUT_ANSWER) {
+        answerOptions.push({
+          answerText: item.value,
+          id: item.dataset.id!
+        })
+      }
+    })
+
+    const testData: ITestListItem = {
+      type: questionType.ONE_MODAL_ANSWER,
+      question,
+      answer,
+      answerOptions,
+    }
+
+    setTestList(prevState => [...prevState, testData])
+    setInputGroup([])
+    createFieldHandler()
+    setQuestion('')
+  }
+
   return (
     <div className="create-question-modal">
-      <h3 className="create-question-modal__title">{inputInitialValues.questionInputName}</h3>
-      <form className="form form-create-question">
-        <FloatingInput name={'Ваш вопрос'} placeholder={'Вопрос'} id={uid()}/>
+      <h3 className="create-question-modal__title">{oneModalAnswerInitialValues.questionInputName}</h3>
+      <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
+        <FloatingInput
+          name={'Ваш вопрос'}
+          placeholder={'Вопрос'}
+          id={uid()}
+          onChange={e => setQuestion(e.target.value)}
+        />
         <span className="create-question-modal__subtitle">Варианты ответа:</span>
         <div className="form-create-question__variants">
           {inputGroup}
@@ -107,6 +100,7 @@ const QuestionModalOneAnswer = () => {
           text={'Создать!'}
           onClick={(e: MouseEvent) => {
             e.preventDefault()
+            submitHandler()
           }}
         />
       </form>
