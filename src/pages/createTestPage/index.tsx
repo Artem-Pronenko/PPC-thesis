@@ -28,13 +28,19 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 3,
-      content: <QuestionModalYerOrNo/>
+      content: <QuestionModalYerOrNo setTestList={setTestList}/>
     }
   ]
 
   const showModal = (id: number) => {
     setActiveModal(true)
     setModalContentId(id)
+  }
+
+  const deleteTest = (id: string) => {
+    setTestList(prevState => {
+      return [...prevState.filter(el => el.id !== id)]
+    })
   }
 
   if (slug === 'multi') return (
@@ -46,8 +52,8 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
         </Modal>
         <div className="left-content">
           {testList.map(el => (
-            <div key={el.question} className="question-card test-card question-card__mb">
-              <button className="question-card__delete delete">&#10007;</button>
+            <div key={el.id} className="question-card test-card question-card__mb">
+              <button className="question-card__delete delete" onClick={() => deleteTest(el.id)}>&#10007;</button>
               <h3 className="question-card__title">{el.question}</h3>
               <span className="question-card__subtitle">Варианрты ответа</span>
               <hr className="question-card__hr"/>

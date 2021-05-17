@@ -1,9 +1,9 @@
-import React, {Dispatch, FC, MouseEvent, SetStateAction, useEffect, useRef, useState} from 'react'
+import React, {Dispatch, FC, FormEvent, SetStateAction, useEffect, useRef, useState} from 'react'
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import ButtonWave from 'components/buttonWave/ButtonWave'
 import CreateField from './CreateField'
 import {INPUT_ANSWER, oneModalAnswerInitialValues, questionType} from 'constant/common'
-import {IAnswerOptions, ITestListItem} from 'types/questionsModalTypes'
+import {ITestListItem} from 'types/questionsModalTypes'
 import {uid} from 'uid'
 
 interface QuestionModalOneAnswerProps {
@@ -41,35 +41,35 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
   }, [])
 
 
-  const submitHandler = () => {
+  const submitHandler = (e: FormEvent) => {
+    e.preventDefault()
     const formElements: Element[] = Array.from(new Set(formRef?.current?.elements))
-    const answerOptions: Array<IAnswerOptions> = []
-    let answer: string = ''
+
+    const testData: ITestListItem = {
+      id: uid(),
+      type: questionType.ONE_ANSWER,
+      question,
+      answer: '',
+      answerOptions: [],
+    }
 
     formElements.map(item => {
       if (!(item instanceof HTMLInputElement)) return
 
-      if (item.checked) answer = item.value
+      if (item.checked) testData.answer = item.value
 
       if (item.dataset.typeInput === INPUT_ANSWER) {
-        answerOptions.push({
+        testData.answerOptions.push({
           answerText: item.value,
           id: item.dataset.id!
         })
       }
     })
 
-    const testData: ITestListItem = {
-      type: questionType.ONE_MODAL_ANSWER,
-      question,
-      answer,
-      answerOptions,
-    }
-
     setTestList(prevState => [...prevState, testData])
+    setQuestion('')
     setInputGroup([])
     createFieldHandler()
-    setQuestion('')
   }
 
   return (
@@ -87,7 +87,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
           {inputGroup}
         </div>
         <button
-          onClick={(e: MouseEvent) => {
+          onClick={(e: FormEvent) => {
             e.preventDefault()
             createFieldHandler()
           }}
@@ -98,10 +98,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
         <hr className="form-create-question__hr"/>
         <ButtonWave
           text={'Создать!'}
-          onClick={(e: MouseEvent) => {
-            e.preventDefault()
-            submitHandler()
-          }}
+          onClick={submitHandler}
         />
       </form>
     </div>

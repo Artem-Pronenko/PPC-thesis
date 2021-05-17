@@ -10,6 +10,7 @@ export interface IAnswerOptions {
 }
 
 export interface ITestListItem {
+  id: string
   question: string
   type: string
   answerOptions: Array<IAnswerOptions>
