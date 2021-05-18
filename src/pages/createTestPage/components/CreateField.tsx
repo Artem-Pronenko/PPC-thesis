@@ -1,8 +1,7 @@
 import React from 'react'
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import RadioButton from 'components/radioButton/RadioButton'
-import {ReactComponent as DoneSvg} from 'assets/icons/done.svg'
-import {ReactComponent as DeleteSVG} from 'assets/icons/delete.svg'
+import {DeleteSvg, DoneSvg} from 'constant/icons'
 import {INPUT_ANSWER} from 'constant/common'
 import {uid} from 'uid'
 
@@ -46,7 +45,7 @@ const CreateField = ({
         id={`radio-delete-${buttonIdHtmlDelete}`}
         value={'delete'}
       >
-        <DeleteSVG/>
+        <DeleteSvg/>
       </RadioButton>
     </div>
   )

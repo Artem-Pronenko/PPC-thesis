@@ -18,7 +18,7 @@ const DropDown: FC<DropDownProps> = ({children, dropList}) => {
           <span className={style.trigger}>{children}</span>
           <ul className={style.drop}>
             {dropList.map(item => (
-              <li className={style.dropItem}><NavLink to={item.path} children={item.text}/></li>
+              <li key={item.text} className={style.dropItem}><NavLink to={item.path} children={item.text}/></li>
             ))}
           </ul>
         </li>

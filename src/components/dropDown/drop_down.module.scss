@@ -1,6 +1,7 @@
 $color-base: #fff;
 $color-text: #000;
 $color-accent: #000;
+$trigger-width: 6.25rem;
 
 a, a:hover {
   color: $color-accent;
@@ -13,8 +14,9 @@ a, a:hover {
 }
 
 .trigger {
-  display: flex;
   width: 100px;
+  display: flex;
+  align-items: center;
 }
 
 .navigation {
@@ -22,11 +24,9 @@ a, a:hover {
   z-index: 10;
 
   .links {
-    //margin-right: 30px;
     position: relative;
 
     li {
-
       & > a {
 
         &:hover {
@@ -65,7 +65,7 @@ a, a:hover {
 
       ul {
         position: absolute;
-        left: 0;
+        left: -($trigger-width / 2);
         margin: 0;
         background: $color-base;
         border-radius: 2px;

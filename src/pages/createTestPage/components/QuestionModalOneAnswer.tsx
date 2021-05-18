@@ -37,10 +37,6 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
   }
 
   useEffect(() => {
-    console.log(111)
-  })
-
-  useEffect(() => {
     createFieldHandler()
   }, [])
 

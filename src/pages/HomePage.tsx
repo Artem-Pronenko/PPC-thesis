@@ -1,13 +1,11 @@
 import React, {useContext} from 'react'
-
 import TestList from 'components/TestList'
+import DropDown from 'components/dropDown/DropDown'
 import testSVG from 'assets/icons/default_test_logo.svg'
-import boySVG from 'assets/icons/boy.svg'
 import userAvatar from 'assets/image/user.png'
-import dropArrow from 'assets/icons/drop-arrow.svg'
-import {FirebaseContext} from 'index'
+import {BoySvg, DropArrowSvg} from 'constant/icons'
 import {FirebaseContextProps} from 'types/firebaseTypes'
-import DropDown from '../components/dropDown/DropDown';
+import {FirebaseContext} from 'index'
 
 const testList = [
   {
@@ -26,6 +24,17 @@ const testList = [
   },
 ]
 
+const dropList = [
+  {
+    text: 'Мой профиль',
+    path: '/profile',
+  },
+  {
+    text: 'Что-то еще',
+    path: '/',
+  },
+]
+
 const HomePage = () => {
   const {firebase, auth, user, db} = useContext<FirebaseContextProps>(FirebaseContext)
 
@@ -38,7 +47,7 @@ const HomePage = () => {
             <span className="banner-subtitle">Удачного прохождения тестов!)</span>
           </div>
           <div className="banner__image">
-            <img src={boySVG} alt="hello image"/>
+            <BoySvg/>
           </div>
         </div>
         <div>
@@ -56,11 +65,11 @@ const HomePage = () => {
               </form>
             </li>
             <li className="user-button">
-              <DropDown dropList={[{text: '11112 1212', path: '/'}, {text: '2222', path: '/'}]}>
+              <DropDown dropList={dropList}>
                 <div className="user-button__avatar">
                   <img src={user?.photoURL ?? userAvatar} alt="user avatar"/>
                 </div>
-                <img className="user-button__icon" src={dropArrow} alt="drop arrow"/>
+                <DropArrowSvg className="user-button__icon"/>
               </DropDown>
             </li>
           </ul>

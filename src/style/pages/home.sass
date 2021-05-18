@@ -19,6 +19,7 @@ $user-button-avatar-size: 2.5rem
 
     &__icon
       width: 14px
+      height: 14px
 
     &__avatar
       width: $user-button-avatar-size
@@ -80,6 +81,10 @@ $user-button-avatar-size: 2.5rem
     &__logo
       margin-right: 5px
 
+      & > img
+        max-width: 65px
+        object-fit: contain
+
     &__wrapper
       +flex-between
       margin-right: 1rem
@@ -112,7 +117,7 @@ $user-button-avatar-size: 2.5rem
   .test-info:first-child
     margin-right: 0
   .left-content
-    flex-basis: 100%
+    flex-basis: 65%
 
 @media (max-width: 992px)
   .test

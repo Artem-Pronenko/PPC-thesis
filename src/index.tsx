@@ -1,30 +1,29 @@
 import React, {createContext, FC} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Redirect} from 'react-router-dom'
-import './firebaseConfig'
-import './style/index.sass'
-import Navbar from './components/Navbar'
-import homeSVG from './assets/icons/home.svg'
-import studySVG from './assets/icons/study.svg'
-import {Routes} from './routes'
+import 'firebaseConfig'
+import 'style/index.sass'
+import Navbar from 'components/Navbar'
+import {Routes} from 'routes'
 import {useAuthState} from 'react-firebase-hooks/auth'
 import firebase from 'firebase/app'
-import {FirebaseContextProps} from './types/firebaseTypes'
+import {FirebaseContextProps} from 'types/firebaseTypes'
 import 'firebase/firestore'
-import Loader from './components/loader/Loader';
+import Loader from 'components/loader/Loader'
+import {HomeSvg, PersonSvg, StudySvg} from 'constant/icons'
 
 const navList = [
   {
     path: '/',
-    icon: homeSVG,
+    icon: <HomeSvg/>,
   },
   {
     path: '/study',
-    icon: studySVG,
+    icon: <StudySvg/>,
   },
   {
     path: '/profile',
-    icon: homeSVG,
+    icon: <PersonSvg/>,
   },
 ]
 
