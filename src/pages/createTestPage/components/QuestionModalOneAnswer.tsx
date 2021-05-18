@@ -37,6 +37,10 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
   }
 
   useEffect(() => {
+    console.log(111)
+  })
+
+  useEffect(() => {
     createFieldHandler()
   }, [])
 
@@ -78,6 +82,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
       <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
         <FloatingInput
           name={'Ваш вопрос'}
+          value={question}
           placeholder={'Вопрос'}
           id={uid()}
           onChange={e => setQuestion(e.target.value)}
@@ -98,7 +103,11 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
         <hr className="form-create-question__hr"/>
         <ButtonWave
           text={'Создать!'}
-          onClick={submitHandler}
+          onClick={(e) => {
+            setQuestion('')
+            console.log(question)
+            submitHandler(e)
+          }}
         />
       </form>
     </div>

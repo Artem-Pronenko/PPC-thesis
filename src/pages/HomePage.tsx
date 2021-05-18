@@ -7,6 +7,7 @@ import userAvatar from 'assets/image/user.png'
 import dropArrow from 'assets/icons/drop-arrow.svg'
 import {FirebaseContext} from 'index'
 import {FirebaseContextProps} from 'types/firebaseTypes'
+import DropDown from '../components/dropDown/DropDown';
 
 const testList = [
   {
@@ -55,10 +56,12 @@ const HomePage = () => {
               </form>
             </li>
             <li className="user-button">
-              <div className="user-button__avatar">
-                <img src={user?.photoURL ?? userAvatar} alt="user avatar"/>
-              </div>
-              <img className="user-button__icon" src={dropArrow} alt="drop arrow"/>
+              <DropDown dropList={[{text: '11112 1212', path: '/'}, {text: '2222', path: '/'}]}>
+                <div className="user-button__avatar">
+                  <img src={user?.photoURL ?? userAvatar} alt="user avatar"/>
+                </div>
+                <img className="user-button__icon" src={dropArrow} alt="drop arrow"/>
+              </DropDown>
             </li>
           </ul>
         </nav>

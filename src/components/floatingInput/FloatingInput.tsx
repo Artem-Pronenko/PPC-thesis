@@ -8,6 +8,7 @@ interface FloatingInputProps {
   onChange: ChangeEventHandler<HTMLInputElement>
   inputDataSet?: string
   inputDataSetId?: string
+  value?: string
 }
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -17,6 +18,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
                                                  onChange,
                                                  inputDataSet = '',
                                                  inputDataSetId = '',
+                                                 value,
                                                }) => {
   return (
     <div className={style.form__group}>
@@ -29,6 +31,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
         onChange={onChange}
         data-type-input={inputDataSet}
         data-id={inputDataSetId}
+        value={value}
         required
       />
       <label htmlFor={id} className={style.form__label}>{name}</label>
