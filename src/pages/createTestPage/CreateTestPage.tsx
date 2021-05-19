@@ -1,10 +1,13 @@
-import React, {FC, useState} from 'react'
-import {RouteProps} from 'types/routeTypes'
+import React, {FC, FormEvent, useContext, useState} from 'react'
 import Modal from 'components/Modal'
+import {RouteProps} from 'types/routeTypes'
+import {ITest} from 'types/firebaseTypes'
 import {Modal2, Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYerOrNo from './components/QuestionModalYerOrNo'
 import {ITestListItem} from 'types/questionsModalTypes'
+import TestPreview from './components/TestPreview'
+import {FirebaseContext} from 'index'
 
 
 const CreateTestPage: FC<RouteProps> = ({match}) => {
@@ -12,6 +15,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
   const [activeModal, setActiveModal] = useState<boolean>(false)
   const [modalContentId, setModalContentId] = useState<number>(0)
   const [testList, setTestList] = useState<Array<ITestListItem>>([])
+  const {db} = useContext(FirebaseContext)
 
   const modalContent = [
     {
@@ -43,6 +47,25 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     })
   }
 
+  const createTest = async (e: FormEvent) => {
+    e.preventDefault()
+
+    const initialData: ITest = {
+      type: slug,
+      id: '',
+      answers: []
+    }
+
+    initialData.id = '-1'
+
+    testList.map(item => {
+      initialData.answers.push(item)
+    })
+
+    const query = db.collection('test').doc()
+    await query.set(initialData)
+  }
+
   if (slug === 'multi') return (
     <div>
       <h3>Создание {slug} теста</h3>
@@ -51,23 +74,10 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
           {modalContent.filter(e => e.id === modalContentId)[0]?.content}
         </Modal>
         <div className="left-content">
-          {testList.map(el => (
-            <div key={el.id} className="question-card test-card question-card__mb">
-              <button className="question-card__delete delete" onClick={() => deleteTest(el.id)}>&#10007;</button>
-              <h3 className="question-card__title">{el.question}</h3>
-              <span className="question-card__subtitle">Варианрты ответа</span>
-              <hr className="question-card__hr"/>
-              <ul className="question-card__answers">
-                {el.answerOptions.map(item => (
-                  <li
-                    key={item.id}
-                    className="question-card__answers-item"
-                  >{item.answerText} {item.id === el.answer && <span>&#10004;</span>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {!testList.length && <h4>Начните создавать тест</h4>}
+          {testList.length > 0 && (
+            <TestPreview testList={testList} deleteTest={deleteTest} createTest={createTest}/>
+          )}
         </div>
         <div className="right-content create-test-bar">
           <button onClick={() => showModal(0)} className="rainbow create-test__button">Вопрос с 1 правильным
