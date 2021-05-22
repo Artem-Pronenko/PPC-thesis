@@ -5,6 +5,7 @@ import UserProfilePage from './pages/UserProfilePage'
 import AuthPage from './pages/AuthPage'
 import Study from './pages/StudyPage'
 import CreateTestPage from './pages/createTestPage/CreateTestPage'
+import MultiTestPage from './pages/takingTestPages/MultiTestPage'
 
 export const Routes = () => {
   return (
@@ -12,6 +13,7 @@ export const Routes = () => {
       <Route path={'/'} component={HomePage} exact/>
       <Route path={'/profile'} component={UserProfilePage}/>
       <Route path={'/study'} component={Study} exact/>
+      <Route path={'/study/multi/:slug'} component={MultiTestPage} exact/>
       <Route path={'/auth'} component={AuthPage}/>
       <Route path={'/create-test/:slug'} component={CreateTestPage}/>
     </Switch>

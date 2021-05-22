@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {FC} from 'react'
 import style from './loader.module.scss'
 
-const Loader = () => {
+interface LoaderProps {
+  isMini?: boolean
+}
+
+const Loader: FC<LoaderProps> = ({isMini = false}) => {
   return (
-    <div className={style.ldioBg}>
-      <div className={style.ldioWrapper}>
+    <div className={isMini ? '' : style.ldioBg}>
+      <div className={isMini ? style.ldioWrapperMini : style.ldioWrapper}>
         <div className={style.ldio1}/>
         <div className={style.ldio2}/>
         <div className={style.ldio3}/>

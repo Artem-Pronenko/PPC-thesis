@@ -46,20 +46,6 @@
   animation-delay: 0.5263157894736842s !important;
 }
 
-@keyframes ldioAnimation {
-  0% {
-    background: #000
-  }
-  12.5% {
-    background: #fff
-  }
-  12.625% {
-    background: #fff
-  }
-  100% {
-    background: #000
-  }
-}
 
 .ldioBg {
   position: fixed;
@@ -69,15 +55,29 @@
   background-color: #000;
   width: 100%;
   height: 100%;
+  z-index: 9999;
 }
 
-.ldioWrapper div {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  background: #fff;
-  animation: ldioAnimation 1.0526315789473684s linear infinite;
-  box-sizing: content-box;
+.ldioWrapper {
+  div {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    animation: ldioAnimation 1.0526315789473684s linear infinite;
+    box-sizing: content-box;
+  }
+
+  &Mini {
+    display: flex;
+
+    div {
+      position: static;
+      width: 20px;
+      height: 20px;
+      animation: ldioAnimation 1.05s linear infinite;
+    }
+  }
 }
 
 .ldioBg {
@@ -94,4 +94,19 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@keyframes ldioAnimation {
+  0% {
+    background: #000
+  }
+  12.5% {
+    background: #fff
+  }
+  12.625% {
+    background: #fff
+  }
+  100% {
+    background: #000
+  }
 }

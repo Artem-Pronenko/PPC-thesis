@@ -3,7 +3,7 @@ $color-text: #000;
 $color-accent: #000;
 $trigger-width: 6.25rem;
 
-a, a:hover {
+.dropLink:hover {
   color: $color-accent;
   text-decoration: none;
   font-weight: 600;

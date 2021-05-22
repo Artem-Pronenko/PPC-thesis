@@ -12,6 +12,9 @@ $user-button-avatar-size: 2.5rem
   & .right-content
     overflow: hidden
 
+  &__banner
+    margin-top: $banner-margin-top
+
 .user
   &-button
     cursor: pointer
@@ -40,7 +43,6 @@ $user-button-avatar-size: 2.5rem
   padding: 0 15px
   position: relative
   height: $banner-height
-  margin-top: $banner-margin-top
   background-color: $primary-bg
   border-radius: $main-border
 
@@ -92,6 +94,10 @@ $user-button-avatar-size: 2.5rem
   &-text
     &__name
       margin: 3px 0
+
+    &__subtitle
+      display: block
+      max-width: 11.5rem
 
 .banners
   +flex-between

@@ -1,26 +1,33 @@
-import React, {FC, FormEvent, useContext, useState} from 'react'
+import React, {FC, FormEvent, useState} from 'react'
 import Modal from 'components/Modal'
 import {RouteProps} from 'types/routeTypes'
-import {ITest} from 'types/firebaseTypes'
+import {ITest, ITestListAnswer} from 'types/dbTypes'
 import {Modal2, Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYerOrNo from './components/QuestionModalYerOrNo'
 import {ITestListItem} from 'types/questionsModalTypes'
+import Loader from 'components/loader/Loader'
 import TestPreview from './components/TestPreview'
-import {FirebaseContext} from 'index'
+import useFirestoreSet from 'hooks/useFirestoreSet'
+import {ERROR_CREATE_TEST} from 'constant/common'
+import {createIdCollection} from 'utiles'
 
 
 const CreateTestPage: FC<RouteProps> = ({match}) => {
   const slug: string = match.params.slug
   const [activeModal, setActiveModal] = useState<boolean>(false)
   const [modalContentId, setModalContentId] = useState<number>(0)
-  const [testList, setTestList] = useState<Array<ITestListItem>>([])
-  const {db} = useContext(FirebaseContext)
+  const [testName, setTestName] = useState<string>('')
+  const [testDescription, setTestDescription] = useState<string>('')
+  const [testEndDate, setTestEndDate] = useState<string>('')
+  const [questionList, setQuestionList] = useState<Array<ITestListItem>>([])
+  const {isLoading: isLoadingTest, setDB: setTest, error} = useFirestoreSet('tests')
+  const {setDB: setTestAnswer} = useFirestoreSet('testsAnswer')
 
   const modalContent = [
     {
       id: 0,
-      content: <QuestionModalOneAnswer setTestList={setTestList}/>
+      content: <QuestionModalOneAnswer setTestList={setQuestionList}/>
     },
     {
       id: 1,
@@ -32,7 +39,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 3,
-      content: <QuestionModalYerOrNo setTestList={setTestList}/>
+      content: <QuestionModalYerOrNo setTestList={setQuestionList}/>
     }
   ]
 
@@ -41,8 +48,8 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     setModalContentId(id)
   }
 
-  const deleteTest = (id: string) => {
-    setTestList(prevState => {
+  const deleteQuestion = (id: string) => {
+    setQuestionList(prevState => {
       return [...prevState.filter(el => el.id !== id)]
     })
   }
@@ -50,20 +57,46 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
   const createTest = async (e: FormEvent) => {
     e.preventDefault()
 
-    const initialData: ITest = {
+    const idDoc = createIdCollection('tests')
+
+    const initialDataTest: ITest = {
+      idDoc: idDoc,
       type: slug,
-      id: '',
+      answers: [],
+      testName,
+      testEndDate,
+      testDescription
+    }
+    const initialDataAnswer: ITestListAnswer = {
+      idDoc: idDoc,
       answers: []
     }
 
-    initialData.id = '-1'
+    questionList.forEach(item => {
 
-    testList.map(item => {
-      initialData.answers.push(item)
+      initialDataAnswer.answers.push({
+        idAnswer: item.id,
+        answer: item.answer!
+      })
+
+      initialDataTest.answers.push({
+        type: item.type,
+        answerOptions: item.answerOptions,
+        id: item.id,
+        question: item.question
+      })
     })
 
-    const query = db.collection('test').doc()
-    await query.set(initialData)
+    setTest({
+      body: initialDataTest,
+      idDoc: idDoc
+    })
+
+    setTestAnswer({
+      body: initialDataAnswer,
+      idDoc: idDoc
+    })
+    setQuestionList([])
   }
 
   if (slug === 'multi') return (
@@ -74,10 +107,22 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
           {modalContent.filter(e => e.id === modalContentId)[0]?.content}
         </Modal>
         <div className="left-content">
-          {!testList.length && <h4>Начните создавать тест</h4>}
-          {testList.length > 0 && (
-            <TestPreview testList={testList} deleteTest={deleteTest} createTest={createTest}/>
+          {!questionList.length && <h4>Начните создавать тест</h4>}
+          {questionList.length > 0 && (
+            <TestPreview
+              testList={questionList}
+              deleteTest={deleteQuestion}
+              createTest={createTest}
+              setTestName={setTestName}
+              testName={testName}
+              setTestDescription={setTestDescription}
+              testDescription={testDescription}
+              testEndDate={testEndDate}
+              setTestEndDate={setTestEndDate}
+            />
           )}
+          {isLoadingTest && <Loader/>}
+          {error && <strong className="error">{ERROR_CREATE_TEST}: {error?.message}</strong>}
         </div>
         <div className="right-content create-test-bar">
           <button onClick={() => showModal(0)} className="rainbow create-test__button">Вопрос с 1 правильным

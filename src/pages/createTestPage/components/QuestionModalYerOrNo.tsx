@@ -55,6 +55,7 @@ const QuestionModalYerOrNo: FC<QuestionModalYerOrNoProps> = ({setTestList}) => {
           placeholder={'Вопрос'}
           id={uid()}
           onChange={e => setQuestion(e.target.value)}
+          value={question}
         />
         <span className="create-question-modal__subtitle">Варианты ответа:</span>
         <div className="form-create-question__variants">

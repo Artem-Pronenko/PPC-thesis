@@ -1,4 +1,4 @@
-import React, {Dispatch, FC, FormEvent, SetStateAction, useEffect, useRef, useState} from 'react'
+import React, {Dispatch, FC, FormEvent, SetStateAction, useCallback, useEffect, useRef, useState} from 'react'
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import ButtonWave from 'components/buttonWave/ButtonWave'
 import CreateField from './CreateField'
@@ -22,7 +22,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
     )
   }
 
-  const createFieldHandler = () => {
+  const createFieldHandler = useCallback(() => {
     const inputId: string = uid()
     const radioButtonValue: string = uid()
 
@@ -34,11 +34,11 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
         deleteField,
       })]
     })
-  }
+  }, [])
 
   useEffect(() => {
     createFieldHandler()
-  }, [])
+  }, [createFieldHandler])
 
 
   const submitHandler = (e: FormEvent) => {
@@ -53,7 +53,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
       answerOptions: [],
     }
 
-    formElements.map(item => {
+    formElements.forEach(item => {
       if (!(item instanceof HTMLInputElement)) return
 
       if (item.checked) testData.answer = item.value
@@ -99,11 +99,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
         <hr className="form-create-question__hr"/>
         <ButtonWave
           text={'Создать!'}
-          onClick={(e) => {
-            setQuestion('')
-            console.log(question)
-            submitHandler(e)
-          }}
+          onClick={submitHandler}
         />
       </form>
     </div>

@@ -14,5 +14,5 @@ export interface ITestListItem {
   question: string
   type: string
   answerOptions: Array<IAnswerOptions>
-  answer: string
+  answer?: string
 }
