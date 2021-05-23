@@ -1,11 +1,10 @@
 import React, {FC, FormEvent, useState} from 'react'
 import Modal from 'components/Modal'
 import {RouteProps} from 'types/routeTypes'
-import {ITest, ITestListAnswer} from 'types/dbTypes'
+import {ITest, ITestListAnswer, ITestListItem} from 'types/dbTypes'
 import {Modal2, Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYerOrNo from './components/QuestionModalYerOrNo'
-import {ITestListItem} from 'types/questionsModalTypes'
 import Loader from 'components/loader/Loader'
 import TestPreview from './components/TestPreview'
 import useFirestoreSet from 'hooks/useFirestoreSet'
@@ -62,7 +61,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     const initialDataTest: ITest = {
       idDoc: idDoc,
       type: slug,
-      answers: [],
+      questions: [],
       testName,
       testEndDate,
       testDescription
@@ -72,18 +71,18 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
       answers: []
     }
 
-    questionList.forEach(item => {
+    questionList.forEach(question => {
 
       initialDataAnswer.answers.push({
-        idAnswer: item.id,
-        answer: item.answer!
+        question: question.id,
+        correctAnswer: question.answer!
       })
 
-      initialDataTest.answers.push({
-        type: item.type,
-        answerOptions: item.answerOptions,
-        id: item.id,
-        question: item.question
+      initialDataTest.questions.push({
+        type: question.type,
+        answerOptions: question.answerOptions,
+        id: question.id,
+        question: question.question
       })
     })
 

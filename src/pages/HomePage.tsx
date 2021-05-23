@@ -35,7 +35,7 @@ const HomePage = () => {
         testEndDate: data.testEndDate,
         testName: data.testName,
         type: data.type,
-        answers: data.answers,
+        questions: data.questions,
       }])
     })
     return () => {

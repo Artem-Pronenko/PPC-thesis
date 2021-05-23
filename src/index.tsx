@@ -10,7 +10,7 @@ import firebase from 'firebase/app'
 import {FirebaseContextProps} from 'types/dbTypes'
 import 'firebase/firestore'
 import Loader from 'components/loader/Loader'
-import {HomeSvg, PersonSvg, StudySvg} from 'constant/icons'
+import {HomeSvg, PersonSvg, StudySvg, HistorySvg} from 'constant/icons'
 
 const navList = [
   {
@@ -24,6 +24,10 @@ const navList = [
   {
     path: '/profile',
     icon: <PersonSvg/>,
+  },
+  {
+    path: '/history',
+    icon: <HistorySvg/>,
   },
 ]
 

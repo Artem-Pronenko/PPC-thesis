@@ -1,6 +1,31 @@
+@import "../constants"
+
 .taking
   &-page
     max-width: 75rem
     margin: 0 auto
 
+    &__subtitle
+      display: block
+      margin-bottom: 10px
+
+    &__complete
+      &-block
+        +flex-between
+      &-text
+        font-size: 1.25rem
+
+  &-card
+    max-width: none
+    min-height: 8.5rem
+    height: auto
+
   &-form
+    &__card
+      margin-bottom: 10px
+      flex-direction: column
+      justify-content: flex-start
+      align-items: flex-start
+
+    &__input
+      margin-right: 10px

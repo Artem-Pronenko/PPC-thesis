@@ -1,6 +1,7 @@
-import {IOneModalAnswerInitialValues} from '../types/questionsModalTypes'
+import {IOneModalAnswerInitialValues} from 'types/questionsModalTypes'
 
 export const INPUT_ANSWER = 'INPUT_ANSWER'
+export const INPUT_QUESTION = 'INPUT_QUESTION'
 
 export const ERROR_CREATE_TEST = 'Ошибка при создании теста'
 

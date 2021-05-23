@@ -6,8 +6,9 @@ export const SUCCESS_RESPONSE: string = 'success'
 export const LOADING_RESPONSE: string = 'loading'
 
 interface IOptions {
-  idDoc?: string
   body: {}
+  idDoc?: string
+  isMerge?: boolean
 }
 
 interface ISuccess {
@@ -22,8 +23,9 @@ interface UseFirestoreSet {
 }
 
 const initialOptions = {
+  body: {},
   url: '',
-  body: {}
+  isMerge: false
 }
 
 const useFirebaseSet = (url: string): UseFirestoreSet => {
@@ -49,7 +51,7 @@ const useFirebaseSet = (url: string): UseFirestoreSet => {
         idDoc = idDoc ?? snapshot.id
         await snapshot.set({
           ...body, idDoc
-        })
+        }, {merge: options.isMerge})
         setResponse({type: SUCCESS_RESPONSE})
       } catch (e) {
         setError(e)

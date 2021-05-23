@@ -1,8 +1,7 @@
 import React, {Dispatch, FC, FormEvent} from 'react'
-import {ITestListItem} from 'types/questionsModalTypes'
-import ButtonWave from 'components/buttonWave/ButtonWave'
-import FloatingInput from '../../../components/floatingInput/FloatingInput';
-import {uid} from 'uid';
+import FloatingInput from 'components/floatingInput/FloatingInput'
+import {ITestListItem} from 'types/dbTypes'
+import {uid} from 'uid'
 
 interface TestPreviewListProps {
   testList: Array<ITestListItem>
