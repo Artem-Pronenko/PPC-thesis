@@ -23,7 +23,7 @@ const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
   const [userTestSnapshot, setUserTestSnapshot] = useState<ITest[]>([])
   const [userTestComplete, setUserTestComplete] = useState<IUserSendTest>()
-  const [testsLeft, setTestsLeft] = useState<string>('')
+  const [testsLeft, setTestsLeft] = useState<string>('0')
   const [testListSnapshot, testListLoading] = useCollection(db.collection('tests'))
   const [userTestCompleteSnapshot] = useDocument(db.collection('usersTestComplete').doc(user?.uid))
 
@@ -48,14 +48,14 @@ const HomePage = () => {
 
   useEffect(() => {
     const userTestComplete = userTestCompleteSnapshot?.data()
+    const _testsLeft: string = (userTestSnapshot.length - (userTestComplete?.completeTestId?.length ?? 0)).toString()
+    setTestsLeft(_testsLeft)
     if (!userTestComplete) return
     setUserTestComplete({
       completeTest: userTestComplete.completeTest,
       completeTestId: userTestComplete.completeTestId
     })
-    const _testsLeft: string = (userTestSnapshot.length - userTestComplete.completeTestId.length).toString()
-    setTestsLeft(_testsLeft)
-  }, [userTestCompleteSnapshot, userTestSnapshot.length])
+  }, [userTestCompleteSnapshot, userTestSnapshot.length, userTestComplete])
 
   return (
     <div className="home flew-wrapper">
@@ -97,7 +97,7 @@ const HomePage = () => {
         </nav>
         <div className="banners">
           <div className="banner test-info home__banner">
-            <span className="test-info__number">{userTestComplete?.completeTest.length}</span>
+            <span className="test-info__number">{userTestComplete?.completeTest.length ?? 0}</span>
             <h4 className="test-info__title">Тестов пройдено</h4>
           </div>
           <div className="banner test-info home__banner">
