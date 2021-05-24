@@ -7,11 +7,11 @@ import {INPUT_ANSWER, questionType} from 'constant/common'
 import {uid} from 'uid'
 
 
-interface QuestionModalYerOrNoProps {
+interface QuestionModalYesOrNoProps {
   setTestList: Dispatch<SetStateAction<ITestListItem[]>>
 }
 
-const QuestionModalYerOrNo: FC<QuestionModalYerOrNoProps> = ({setTestList}) => {
+const QuestionModalYesOrNo: FC<QuestionModalYesOrNoProps> = ({setTestList}) => {
   const [question, setQuestion] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
 
@@ -27,7 +27,7 @@ const QuestionModalYerOrNo: FC<QuestionModalYerOrNoProps> = ({setTestList}) => {
       answerOptions: [],
     }
 
-    formElements.map(item => {
+    formElements.forEach(item => {
       if (!(item instanceof HTMLInputElement)) return
       if (item.checked) testData.answer = item.dataset.id!
 
@@ -83,4 +83,4 @@ const QuestionModalYerOrNo: FC<QuestionModalYerOrNoProps> = ({setTestList}) => {
   )
 }
 
-export default QuestionModalYerOrNo
+export default QuestionModalYesOrNo

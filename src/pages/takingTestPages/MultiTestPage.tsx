@@ -1,6 +1,7 @@
 import React, {FC, FormEvent, useContext, useEffect, useRef, useState} from 'react'
+import {NavLink} from 'react-router-dom'
 import {RouteProps} from 'types/routeTypes'
-import {ITest, IUserSendTest} from 'types/dbTypes'
+import {ITest, IUserAnswer, IUserCompleteTest, IUserSendTest} from 'types/dbTypes'
 import Loader from 'components/loader/Loader'
 import {useDocument} from 'react-firebase-hooks/firestore'
 import {FirebaseContext} from 'index'
@@ -13,13 +14,16 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
   const url = 'usersTestComplete'
   const {setDB} = useFirestoreSet(url)
   const formRef = useRef<HTMLFormElement>(null)
-  const {db, auth, firebase} = useContext(FirebaseContext)
-  const [response, setResponse] = useState<ITest | null>(null)
+  const {db, firebase, user} = useContext(FirebaseContext)
+  const [responseTest, setResponse] = useState<ITest | null>(null)
+  const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
   const [isSendTest, setIsSendTest] = useState<boolean>(false)
-  const [responseSnapshot, loading, error] = useDocument(db.collection('tests').doc(slug))
+  const [testSnapshot, loadingTest, error] = useDocument(db.collection('tests').doc(slug))
+  const [userCompleteSnapshot] = useDocument(db.collection('usersTestComplete').doc(user?.uid))
 
   useEffect(() => {
-    const data = responseSnapshot?.data()
+    // Loading test
+    const data = testSnapshot?.data()
     if (!data) return
     setResponse({
       id: data?.id,
@@ -30,29 +34,45 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
       questions: data.questions,
       testEndDate: data.testEndDate,
     })
-  }, [responseSnapshot])
+  }, [testSnapshot])
 
+  useEffect(() => {
+    // Loading user answers
+    const data = userCompleteSnapshot?.data()
+    if (!data) return
+    if (!data?.completeTestId.includes(slug)) {
+      setUserAnswer([])
+      return
+    }
+    setIsSendTest(true)
+
+    const completeTestList: IUserCompleteTest[] = data?.completeTest
+    if (completeTestList.length <= 0) return
+    const completeTest: IUserCompleteTest = completeTestList.filter(e => e.testId === slug)[0]
+
+    setUserAnswer(completeTest.answers)
+  }, [userCompleteSnapshot, slug])
 
   const sendTest = async (e: FormEvent) => {
     e.preventDefault()
+    const completeTest: IUserCompleteTest = {
+      testId: responseTest!.idDoc,
+      answers: []
+    }
+
     const body: IUserSendTest = {
-      completeTestId: firebase.firestore.FieldValue.arrayUnion(response!.idDoc),
-      completeTest: [
-        {
-          testId: response!.idDoc,
-          answers: []
-        }
-      ]
+      completeTestId: firebase.firestore.FieldValue.arrayUnion(responseTest!.idDoc),
+      completeTest: firebase.firestore.FieldValue.arrayUnion(completeTest)
     }
 
     const formElements: Element[] = Array.from(new Set(formRef?.current?.elements))
 
-    formElements.map(item => {
+    formElements.forEach(item => {
       if (!(item instanceof HTMLInputElement)) return
 
       if (item.dataset.typeInput === INPUT_ANSWER) {
         if (!item.checked) return
-        body.completeTest[0].answers.push({
+        completeTest.answers.push({
           answerId: item.value,
           questionId: item.dataset.question!
         })
@@ -61,22 +81,32 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
 
     setDB({
       body,
-      idDoc: auth.currentUser!.uid,
+      idDoc: user!.uid,
       isMerge: true
     })
     setIsSendTest(true)
   }
 
+  const isChecked = (currentAnswerId: string, currentQuestionId: string): boolean => {
+    let isChecked: boolean = false
+    userAnswer?.forEach(e => {
+      if (e.questionId === currentQuestionId)
+        isChecked = currentAnswerId === e.answerId
+    })
+    return isChecked
+  }
+
+
   return (
     <div className="taking taking-page">
       {error && (<strong className="error">{error.message}</strong>)}
-      {loading && <Loader/>}
-      {response && (
+      {loadingTest && <Loader/>}
+      {responseTest && userAnswer && (
         <div>
-          <h3 className="taking-page__title">{response.testName}</h3>
-          <span className="taking-page__subtitle">{response.testDescription}</span>
+          <h3 className="taking-page__title">{responseTest.testName}</h3>
+          <span className="taking-page__subtitle">{responseTest.testDescription}</span>
           <form className="taking-form" ref={formRef} onSubmit={sendTest}>
-            {response.questions?.map(question => (
+            {responseTest.questions?.map(question => (
               <div key={question.id} className={`taking-card taking-form__card banner ${isSendTest ? 'disabled' : ''}`}>
                 <h3>{question.question}</h3>
                 <ul>
@@ -88,6 +118,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
                           type="radio"
                           value={answerOption.id}
                           disabled={isSendTest}
+                          defaultChecked={isChecked(answerOption.id, question.id)}
                           name={question.type === questionType.YES_OR_NO_ANSWER || question.type === questionType.ONE_ANSWER ? question.id : uid()}
                           data-type-input={INPUT_ANSWER}
                           data-question={question.id}
@@ -102,7 +133,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
             {isSendTest
               ? (
                 <div className="taking-page__complete-block">
-                  <button>Посмотреть историю</button>
+                  <NavLink className="button" to={`/history/${slug}`}>Посмотреть историю</NavLink>
                   <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
                 </div>
               )

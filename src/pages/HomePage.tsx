@@ -4,9 +4,9 @@ import DropDown from 'components/dropDown/DropDown'
 import Loader from 'components/loader/Loader'
 import userAvatar from 'assets/image/user.png'
 import {BoySvg, DropArrowSvg} from 'constant/icons'
-import {FirebaseContextProps, ITest} from 'types/dbTypes'
+import {FirebaseContextProps, ITest, IUserSendTest} from 'types/dbTypes'
 import {FirebaseContext} from 'index'
-import {useCollection} from 'react-firebase-hooks/firestore'
+import {useCollection, useDocument} from 'react-firebase-hooks/firestore'
 
 const dropList = [
   {
@@ -21,27 +21,41 @@ const dropList = [
 
 const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
-  const [response, setResponse] = useState<ITest[]>([])
-  const [testListSnapshot, testListLoading, error] = useCollection(db.collection('tests'))
+  const [userTestSnapshot, setUserTestSnapshot] = useState<ITest[]>([])
+  const [userTestComplete, setUserTestComplete] = useState<IUserSendTest>()
+  const [testsLeft, setTestsLeft] = useState<string>('')
+  const [testListSnapshot, testListLoading] = useCollection(db.collection('tests'))
+  const [userTestCompleteSnapshot] = useDocument(db.collection('usersTestComplete').doc(user?.uid))
 
 
   useEffect(() => {
-    testListSnapshot?.docs.map(item => {
-      const data = item.data()
-      setResponse(prevState => [...prevState, {
-        id: data?.id,
-        idDoc: data.idDoc,
-        testDescription: data.testDescription,
-        testEndDate: data.testEndDate,
-        testName: data.testName,
-        type: data.type,
-        questions: data.questions,
+    testListSnapshot?.docs.forEach(item => {
+      const testListItem = item.data()
+      setUserTestSnapshot(prevState => [...prevState, {
+        id: testListItem?.id,
+        idDoc: testListItem.idDoc,
+        testDescription: testListItem.testDescription,
+        testEndDate: testListItem.testEndDate,
+        testName: testListItem.testName,
+        type: testListItem.type,
+        questions: testListItem.questions,
       }])
     })
     return () => {
     }
   }, [testListSnapshot])
 
+
+  useEffect(() => {
+    const userTestComplete = userTestCompleteSnapshot?.data()
+    if (!userTestComplete) return
+    setUserTestComplete({
+      completeTest: userTestComplete.completeTest,
+      completeTestId: userTestComplete.completeTestId
+    })
+    const _testsLeft: string = (userTestSnapshot.length - userTestComplete.completeTestId.length).toString()
+    setTestsLeft(_testsLeft)
+  }, [userTestCompleteSnapshot, userTestSnapshot.length])
 
   return (
     <div className="home flew-wrapper">
@@ -58,8 +72,8 @@ const HomePage = () => {
         <div>
           <h3>Активные тесты</h3>
           {testListLoading && <Loader isMini={true}/>}
-          {!testListLoading && !response.length && <strong>Активных тестов нет!)</strong>}
-          <TestList testList={response}/>
+          {!testListLoading && !userTestSnapshot.length && <strong>Активных тестов нет!)</strong>}
+          <TestList testList={userTestSnapshot} completeTestIds={userTestComplete?.completeTestId ?? []}/>
         </div>
       </div>
       <div className="right-content">
@@ -83,11 +97,11 @@ const HomePage = () => {
         </nav>
         <div className="banners">
           <div className="banner test-info home__banner">
-            <span className="test-info__number">11</span>
+            <span className="test-info__number">{userTestComplete?.completeTest.length}</span>
             <h4 className="test-info__title">Тестов пройдено</h4>
           </div>
           <div className="banner test-info home__banner">
-            <span className="test-info__number">2</span>
+            <span className="test-info__number">{testsLeft}</span>
             <h4 className="test-info__title">Тестов осталось</h4>
           </div>
         </div>

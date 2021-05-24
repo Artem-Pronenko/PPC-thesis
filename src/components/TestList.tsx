@@ -1,18 +1,24 @@
-import React, {FC} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
 import {ITest} from 'types/dbTypes'
 import testSVG from 'assets/icons/default_test_logo.svg'
 
 export interface TestListProps {
   testList: ITest[]
+  completeTestIds: Array<string>
 }
 
-const TestList: FC<TestListProps> = ({testList}) => {
+const TestList: FC<TestListProps> = ({testList, completeTestIds}) => {
+  const [completeId, setCompleteId] = useState<Array<string>>([])
+
+  useEffect(() => {
+    setCompleteId(completeTestIds)
+  }, [completeTestIds])
 
   return (
     <ul className="test-list">
       {testList.map(item => (
-        <li className="test-item" key={item.idDoc}>
+        <li className={`test-item ${completeId.includes(item.idDoc) ? 'hide' : ''}`} key={item.idDoc}>
           <div className="test-item__wrapper">
             <div className="test-item__logo">
               <img src={testSVG} alt="test avatar"/>

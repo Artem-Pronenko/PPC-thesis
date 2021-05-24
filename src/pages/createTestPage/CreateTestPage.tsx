@@ -4,7 +4,7 @@ import {RouteProps} from 'types/routeTypes'
 import {ITest, ITestListAnswer, ITestListItem} from 'types/dbTypes'
 import {Modal2, Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
-import QuestionModalYerOrNo from './components/QuestionModalYerOrNo'
+import QuestionModalYesOrNo from './components/QuestionModalYesOrNo'
 import Loader from 'components/loader/Loader'
 import TestPreview from './components/TestPreview'
 import useFirestoreSet from 'hooks/useFirestoreSet'
@@ -38,7 +38,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 3,
-      content: <QuestionModalYerOrNo setTestList={setQuestionList}/>
+      content: <QuestionModalYesOrNo setTestList={setQuestionList}/>
     }
   ]
 

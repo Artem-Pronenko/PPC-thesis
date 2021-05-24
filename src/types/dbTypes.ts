@@ -42,18 +42,18 @@ export interface ITestListAnswer {
   answers: ITestAnswer[]
 }
 
-interface IUserAnswer {
+export interface IUserAnswer {
   answerId: string
   questionId: string
 }
 
-interface IUserCompleteTest {
+export interface IUserCompleteTest {
   testId: string,
   answers: Array<IUserAnswer>
 }
 
 export interface IUserSendTest {
-  completeTestId: firebase.firestore.FieldValue,
+  completeTestId: Array<string>,
   completeTest: IUserCompleteTest[]
 }
 
