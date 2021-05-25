@@ -1,4 +1,4 @@
-import React, {createContext, FC} from 'react'
+import React, {createContext, FC, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter as Router, Redirect} from 'react-router-dom'
 import 'firebaseConfig'
@@ -51,7 +51,6 @@ const App: FC = () => {
   return (
     <FirebaseContext.Provider value={{firebase, auth, user, db}}>
       <div className="app">
-        <Redirect to={'/'}/>
         <Navbar navigationList={navList}/>
         <div className="main-content">
           <Routes/>

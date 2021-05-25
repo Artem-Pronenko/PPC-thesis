@@ -55,7 +55,7 @@ const HomePage = () => {
       completeTest: userTestComplete.completeTest,
       completeTestId: userTestComplete.completeTestId
     })
-  }, [userTestCompleteSnapshot, userTestSnapshot.length, userTestComplete])
+  }, [userTestCompleteSnapshot, userTestSnapshot])
 
   return (
     <div className="home flew-wrapper">
