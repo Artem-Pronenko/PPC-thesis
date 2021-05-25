@@ -2,8 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import TestList from 'components/TestList'
 import DropDown from 'components/dropDown/DropDown'
 import Loader from 'components/loader/Loader'
-import userAvatar from 'assets/image/user.png'
-import {BoySvg, DropArrowSvg} from 'constant/icons'
+import {BoySvg, DropArrowSvg, noUserImg} from 'constant/icons'
 import {FirebaseContextProps, ITest, IUserSendTest} from 'types/dbTypes'
 import {FirebaseContext} from 'index'
 import {useCollection, useDocument} from 'react-firebase-hooks/firestore'
@@ -88,7 +87,7 @@ const HomePage = () => {
             <li className="user-button">
               <DropDown dropList={dropList}>
                 <div className="user-button__avatar">
-                  <img src={user?.photoURL ?? userAvatar} alt="user avatar"/>
+                  <img src={user?.photoURL ?? noUserImg} alt="user avatar"/>
                 </div>
                 <DropArrowSvg className="user-button__icon"/>
               </DropDown>

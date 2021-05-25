@@ -1,69 +1,20 @@
-import React, {FC, FormEvent, LegacyRef, useContext, useEffect, useRef, useState} from 'react'
-import {NavLink} from 'react-router-dom'
+import React, {FC, FormEvent, useContext, useEffect, useRef, useState} from 'react'
 import {RouteProps} from 'types/routeTypes'
 import {ITest, IUserAnswer, IUserCompleteTest, IUserSendTest} from 'types/dbTypes'
 import Loader from 'components/loader/Loader'
 import {useDocument} from 'react-firebase-hooks/firestore'
 import {FirebaseContext} from 'index'
 import useFirestoreSet from 'hooks/useFirestoreSet'
-import {INPUT_ANSWER, questionType} from 'constant/common'
-import {uid} from 'uid'
-
-interface formProps {
-  formRef: LegacyRef<HTMLFormElement>
-  sendTest: (e: FormEvent) => void
-  responseTest: ITest
-  isSendTest: boolean
-  isChecked: (currentAnswerId: string, currentQuestionId: string) => boolean
-  slug: string
-}
-
-const TestForm: FC<formProps> = ({formRef, sendTest, responseTest, isSendTest, isChecked, slug}) => {
-  return (
-    <form className="taking-form" ref={formRef} onSubmit={sendTest}>
-      {responseTest.questions?.map(question => (
-        <div key={question.id} className={`taking-card taking-form__card banner ${isSendTest ? 'disabled' : ''}`}>
-          <h3>{question.question}</h3>
-          <ul>
-            {question.answerOptions.map(answerOption => (
-              <li key={answerOption.id}>
-                <label>
-                  <input
-                    className="taking-form__input"
-                    type="radio"
-                    value={answerOption.id}
-                    disabled={isSendTest}
-                    defaultChecked={isChecked(answerOption.id, question.id)}
-                    name={question.type === questionType.YES_OR_NO_ANSWER || question.type === questionType.ONE_ANSWER ? question.id : uid()}
-                    data-type-input={INPUT_ANSWER}
-                    data-question={question.id}
-                  />
-                  {answerOption.answerText}
-                </label>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-      {isSendTest
-        ? (
-          <div className="taking-page__complete-block">
-            <NavLink className="button" to={`/history/${slug}`}>Посмотреть историю</NavLink>
-            <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
-          </div>
-        )
-        : <button>Отправить</button>
-      }
-
-    </form>
-  )
-}
+import {INPUT_ANSWER} from 'constant/common'
+import TestForm from './components/TestForm'
 
 
 const MultiTestPage: FC<RouteProps> = ({match}) => {
   const slug = match.params.slug
-  const url = 'usersTestComplete'
-  const {setDB} = useFirestoreSet(url)
+  const urlUsersTest = 'usersTestComplete'
+  const urlUserSettings = 'users'
+  const {setDB: setUsersTest} = useFirestoreSet(urlUsersTest)
+  const {setDB: setUsersSettings} = useFirestoreSet(urlUserSettings)
   const formRef = useRef<HTMLFormElement>(null)
   const {db, firebase, user} = useContext(FirebaseContext)
   const [responseTest, setResponse] = useState<ITest | null>(null)
@@ -130,10 +81,15 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
       }
     })
 
-    setDB({
+    setUsersTest({
       body,
       idDoc: user!.uid,
       isMerge: true
+    })
+
+    setUsersSettings({
+      body: body.completeTestId,
+      isMerge: true,
     })
     setIsSendTest(true)
   }
@@ -149,7 +105,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
 
 
   return (
-    <div className="taking taking-page">
+    <div className="taking taking-page center-page">
       {error && (<strong className="error">{error.message}</strong>)}
       {loadingTest && <Loader/>}
       {responseTest && (

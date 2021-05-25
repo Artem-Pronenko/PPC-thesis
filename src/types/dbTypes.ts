@@ -48,14 +48,24 @@ export interface IUserAnswer {
 }
 
 export interface IUserCompleteTest {
-  testId: string,
+  testId: string
   answers: Array<IUserAnswer>
 }
 
 export interface IUserSendTest {
-  completeTestId: Array<string>,
+  completeTestId: Array<string>
   completeTest: IUserCompleteTest[]
 }
+
+export interface IUserInitialData {
+  displayName: string
+  uid: string
+  group: number
+  photoURL: string
+  completeTestId: Array<string>
+}
+
+export type TGroups = Array<number>
 
 
 export {DocumentReference}
