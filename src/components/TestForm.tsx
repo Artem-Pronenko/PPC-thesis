@@ -1,21 +1,18 @@
-import React, {FC, FormEvent, LegacyRef} from 'react'
+import React, {FC, LegacyRef} from 'react'
 import {ITest} from 'types/dbTypes'
 import {INPUT_ANSWER, questionType} from 'constant/common'
-import {NavLink} from 'react-router-dom'
 import {uid} from 'uid'
 
 interface TestFormProps {
   formRef: LegacyRef<HTMLFormElement>
-  sendTest: (e: FormEvent) => void
   responseTest: ITest
   isSendTest: boolean
   isChecked: (currentAnswerId: string, currentQuestionId: string) => boolean
-  slug: string
 }
 
-const TestForm: FC<TestFormProps> = ({formRef, sendTest, responseTest, isSendTest, isChecked, slug}) => {
+const TestForm: FC<TestFormProps> = ({formRef, responseTest, isSendTest, isChecked}) => {
   return (
-    <form className="taking-form" ref={formRef} onSubmit={sendTest}>
+    <form className="taking-form" ref={formRef}>
       {responseTest.questions?.map(question => (
         <div key={question.id} className={`taking-card taking-form__card banner ${isSendTest ? 'disabled' : ''}`}>
           <h3>{question.question}</h3>
@@ -40,16 +37,6 @@ const TestForm: FC<TestFormProps> = ({formRef, sendTest, responseTest, isSendTes
           </ul>
         </div>
       ))}
-      {isSendTest
-        ? (
-          <div className="taking-page__complete-block">
-            <NavLink className="button" to={`/history/${slug}`}>Посмотреть историю</NavLink>
-            <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
-          </div>
-        )
-        : <button>Отправить</button>
-      }
-
     </form>
   )
 }

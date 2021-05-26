@@ -1,22 +1,21 @@
 import React, {FC, FormEvent, useContext, useEffect, useRef, useState} from 'react'
+import {NavLink} from 'react-router-dom'
 import {RouteProps} from 'types/routeTypes'
-import {ITest, IUserAnswer, IUserCompleteTest, IUserSendTest} from 'types/dbTypes'
+import {ITest, IUserAnswer, IUserCompleteTest} from 'types/dbTypes'
 import Loader from 'components/loader/Loader'
+import TestForm from 'components/TestForm'
 import {useDocument} from 'react-firebase-hooks/firestore'
 import {FirebaseContext} from 'index'
-import useFirestoreSet from 'hooks/useFirestoreSet'
+import {IsCheckedAnswer} from 'utiles'
+import {onSendTest} from 'api'
 import {INPUT_ANSWER} from 'constant/common'
-import TestForm from './components/TestForm'
-
 
 const MultiTestPage: FC<RouteProps> = ({match}) => {
   const slug = match.params.slug
   const urlUsersTest = 'usersTestComplete'
   const urlUserSettings = 'users'
-  const {setDB: setUsersTest} = useFirestoreSet(urlUsersTest)
-  const {setDB: setUsersSettings} = useFirestoreSet(urlUserSettings)
   const formRef = useRef<HTMLFormElement>(null)
-  const {db, firebase, user} = useContext(FirebaseContext)
+  const {db, user} = useContext(FirebaseContext)
   const [responseTest, setResponse] = useState<ITest | null>(null)
   const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
   const [isSendTest, setIsSendTest] = useState<boolean>(false)
@@ -55,54 +54,30 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
     setUserAnswer(completeTest.answers)
   }, [userCompleteSnapshot, slug])
 
-  const sendTest = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    const completeTest: IUserCompleteTest = {
-      testId: responseTest!.idDoc,
-      answers: []
-    }
-
-    const body: IUserSendTest = {
-      completeTestId: firebase.firestore.FieldValue.arrayUnion(responseTest!.idDoc),
-      completeTest: firebase.firestore.FieldValue.arrayUnion(completeTest)
-    }
-
     const formElements: Element[] = Array.from(new Set(formRef?.current?.elements))
+    const answers: Array<IUserAnswer> = []
 
     formElements.forEach(item => {
       if (!(item instanceof HTMLInputElement)) return
-
       if (item.dataset.typeInput === INPUT_ANSWER) {
         if (!item.checked) return
-        completeTest.answers.push({
+        answers.push({
           answerId: item.value,
           questionId: item.dataset.question!
         })
       }
     })
 
-    setUsersTest({
-      body,
-      idDoc: user!.uid,
-      isMerge: true
-    })
-
-    setUsersSettings({
-      body: body.completeTestId,
-      isMerge: true,
+    await onSendTest({
+      urlTest: urlUsersTest,
+      urlTestComplete: urlUserSettings,
+      responseTestId: responseTest!.idDoc,
+      answers,
     })
     setIsSendTest(true)
   }
-
-  const isChecked = (currentAnswerId: string, currentQuestionId: string): boolean => {
-    let isChecked: boolean = false
-    userAnswer?.forEach(e => {
-      if (e.questionId === currentQuestionId)
-        isChecked = currentAnswerId === e.answerId
-    })
-    return isChecked
-  }
-
 
   return (
     <div className="taking taking-page center-page">
@@ -117,9 +92,11 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
               formRef={formRef}
               isSendTest={isSendTest}
               responseTest={responseTest}
-              isChecked={isChecked}
-              sendTest={sendTest}
-              slug={slug}
+              isChecked={(currentAnswerId, currentQuestionId) => IsCheckedAnswer({
+                currentAnswerId,
+                currentQuestionId,
+                userAnswer
+              })}
             />
           )}
           {responseTest && !userAnswer && (
@@ -127,11 +104,22 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
               formRef={formRef}
               isSendTest={isSendTest}
               responseTest={responseTest}
-              isChecked={isChecked}
-              sendTest={sendTest}
-              slug={slug}
+              isChecked={(currentAnswerId, currentQuestionId) => IsCheckedAnswer({
+                currentAnswerId,
+                currentQuestionId,
+                userAnswer
+              })}
             />
           )}
+          {isSendTest
+            ? (
+              <div className="taking-page__complete-block">
+                <NavLink className="button" to={`/history/${slug}`}>Посмотреть историю</NavLink>
+                <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
+              </div>
+            )
+            : <button onClick={handleSubmit}>Отправить</button>
+          }
         </div>
       )}
     </div>
