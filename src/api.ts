@@ -69,3 +69,11 @@ export const onSendTest = async ({responseTestId, urlTest, urlTestComplete, answ
 
 }
 
+export const getUserInfo = async (uid: string): Promise<firebase.firestore.DocumentSnapshot | void> => {
+  try {
+    return await firebase.firestore().collection('users').doc(uid).get()
+  } catch (e) {
+    console.log(e)
+  }
+}
+

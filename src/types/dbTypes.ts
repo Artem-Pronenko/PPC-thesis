@@ -57,6 +57,10 @@ export interface IUserSendTest {
   completeTest: IUserCompleteTest[]
 }
 
+export type ITestMinInfo = Array<{ testName: string, testId: string }>
+
+
+
 export interface IUserInitialData {
   displayName: string
   uid: string
