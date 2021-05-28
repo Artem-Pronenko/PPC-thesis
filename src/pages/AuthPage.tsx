@@ -18,7 +18,7 @@ const AuthPage = () => {
       const res = await getOldUser(user.uid)
       if (res?.data()) return
       const body: IUserInitialData = {
-        group: 0,
+        group: 'Нет группы',
         displayName: user.displayName!,
         uid: user.uid,
         photoURL: user.photoURL ?? noUserImg,

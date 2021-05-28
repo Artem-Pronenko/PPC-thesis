@@ -64,7 +64,7 @@ export type ITestMinInfo = Array<{ testName: string, testId: string }>
 export interface IUserInitialData {
   displayName: string
   uid: string
-  group: number
+  group: string
   photoURL: string
   completeTestId: Array<string>
 }

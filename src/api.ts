@@ -1,5 +1,6 @@
 import {DocumentData, IUserAnswer, IUserCompleteTest, IUserInitialData} from 'types/dbTypes'
 import firebase from 'firebase/app'
+import 'firebase/auth'
 
 const auth = firebase.auth()
 

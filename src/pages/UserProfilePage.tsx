@@ -3,25 +3,43 @@ import {FirebaseContext} from 'index'
 import {noUserImg} from 'constant/icons'
 import {useDocument} from 'react-firebase-hooks/firestore'
 import {TGroups} from 'types/dbTypes'
+import useFirestoreSet from 'hooks/useFirestoreSet'
+import Loader from 'components/loader/Loader'
+import {getUserInfo} from 'api'
 
 const UserProfilePage = () => {
   const {user, db} = useContext(FirebaseContext)
   const [isEditProfile, setIsEditProfile] = useState<boolean>(false)
   const [groups, setGroups] = useState<TGroups>()
+  const [choseGroups, setChoseGroups] = useState<string>('')
+  const [userGroup, setUserGroup] = useState<string>('')
   const [groupsSnapshot, loadingGroups] = useDocument(db.collection('groups').doc('groups'))
-
+  const {setDB} = useFirestoreSet('users')
 
   useEffect(() => {
     const groupsData = groupsSnapshot?.data()
     if (!groupsData) return
     setGroups(groupsData?.allGroups)
-
-
   }, [groupsSnapshot])
+
+  useEffect(() => {
+    (async () => {
+      if (!user) return
+      const userData = await getUserInfo(user.uid)
+      if (!userData) return
+      const userInfo = userData.data()
+      setUserGroup(userInfo?.group)
+    })()
+
+  }, [user])
 
   const onSaveChange = () => {
     setIsEditProfile(false)
-
+    setDB({
+      body: {group: choseGroups},
+      idDoc: user!.uid,
+      isMerge: true
+    })
   }
 
   const onChange = () => {
@@ -38,15 +56,22 @@ const UserProfilePage = () => {
         <strong className="user-profile__user-name">{user?.displayName}</strong>
       </div>
       <hr/>
-      <div className="user-profile__settings">
-        <label htmlFor="select-group" className="user-profile__select-label">Выбрать группу:</label>
-        <select id="select-group" onChange={onChange} defaultValue='no_group'>
-          <option value="no_group" hidden>Выбрать группу</option>
-          {groups?.map((e, index) => (
-            <option key={`${e}${index}`} value={e}>{e}</option>
-          ))}
-        </select>
-      </div>
+      {loadingGroups ?
+        <Loader isMini={true}/>
+        : (
+          <div className="user-profile__settings">
+            <label htmlFor="select-group" className="user-profile__select-label">Выбрать группу:</label>
+            <select id="select-group" onChange={(e) => {
+              onChange()
+              setChoseGroups(e.target.value)
+            }} >
+              <option value="user_group" hidden>{userGroup}</option>
+              {groups?.map((e, index) => (
+                <option key={`${e}`} value={e}>{e}</option>
+              ))}
+            </select>
+          </div>
+        )}
       {isEditProfile && <button onClick={onSaveChange} type="submit">Сохранить</button>}
     </section>
   )

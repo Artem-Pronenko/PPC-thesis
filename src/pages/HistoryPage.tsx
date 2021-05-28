@@ -14,9 +14,9 @@ const HistoryPage = () => {
   useEffect(() => {
     (async () => {
       if (!user) return
-      const completeTestData = await getUserInfo(user.uid)
-      if (!completeTestData) return
-      const completeTest = completeTestData.data()
+      const userData = await getUserInfo(user.uid)
+      if (!userData) return
+      const completeTest = userData.data()
       testsSnapshot?.docs.forEach(testData => {
         const test = testData.data()
         if (completeTest?.completeTestId.includes(test.idDoc)) {
@@ -35,6 +35,7 @@ const HistoryPage = () => {
     <div className="history-page">
       {errorLoadingTest && <strong>{errorLoadingTest.message}</strong>}
       {loadingTests && <Loader isMini={true}/>}
+      {!completedTest.length && !loadingTests && <strong>Вы не проходили тесты</strong>}
       {completedTest?.map(test => (
         <div key={test.testId} className="history-page__card banner">
           <h3>{test.testName}</h3>
