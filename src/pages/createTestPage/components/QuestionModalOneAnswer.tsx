@@ -8,9 +8,10 @@ import {uid} from 'uid'
 
 interface QuestionModalOneAnswerProps {
   setTestList: Dispatch<SetStateAction<ITestListItem[]>>
+  maxAnswer: number
 }
 
-const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) => {
+const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, maxAnswer}) => {
   const [inputGroup, setInputGroup] = useState<Array<JSX.Element>>([])
   const [question, setQuestion] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -87,14 +88,11 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList}) 
         <div className="form-create-question__variants">
           {inputGroup}
         </div>
-        <button
-          onClick={(e: FormEvent) => {
+        {maxAnswer > inputGroup.length && <button onClick={(e: FormEvent) => {
             e.preventDefault()
             createFieldHandler()
-          }}
-        >
-          added
-        </button>
+          }}>added</button>}
+
 
         <hr className="form-create-question__hr"/>
         <ButtonWave

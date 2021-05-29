@@ -9,6 +9,7 @@ import {ReactComponent as defaultTestLogo} from 'assets/icons/default_test_logo.
 import {ReactComponent as studySvg} from 'assets/icons/study.svg'
 import {ReactComponent as logoutSvg} from 'assets/icons/logout.svg'
 import {ReactComponent as historySvg} from 'assets/icons/history.svg'
+import {ReactComponent as settingsSvg} from 'assets/icons/settings.svg'
 import noUserImg from 'assets/image/no_user.png'
 
 
@@ -23,4 +24,5 @@ export const DefaultTestLogo = defaultTestLogo
 export const StudySvg = studySvg
 export const LogoutSvg = logoutSvg
 export const HistorySvg = historySvg
+export const SettingsSvg = settingsSvg
 export {noUserImg}

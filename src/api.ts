@@ -1,6 +1,7 @@
 import {DocumentData, IUserAnswer, IUserCompleteTest, IUserInitialData} from 'types/dbTypes'
 import firebase from 'firebase/app'
 import 'firebase/auth'
+import {APIUrls} from 'constant/api_urls'
 
 const auth = firebase.auth()
 
@@ -14,7 +15,7 @@ export const authUser = async (): Promise<firebase.auth.UserCredential | void> =
 
 export const getOldUser = (uid: string): Promise<DocumentData> | undefined => {
   try {
-    return firebase.firestore().collection('users').doc(uid).get()
+    return firebase.firestore().collection(APIUrls.users).doc(uid).get()
   } catch (e) {
     console.error(e)
   }
@@ -22,7 +23,7 @@ export const getOldUser = (uid: string): Promise<DocumentData> | undefined => {
 
 export const setUsersData = async (uid: string, body: IUserInitialData): Promise<void> => {
   try {
-    return firebase.firestore().collection('users').doc(uid).set(body)
+    return firebase.firestore().collection(APIUrls.users).doc(uid).set(body)
   } catch (e) {
     console.error(e)
   }
@@ -72,7 +73,7 @@ export const onSendTest = async ({responseTestId, urlTest, urlTestComplete, answ
 
 export const getUserInfo = async (uid: string): Promise<firebase.firestore.DocumentSnapshot | void> => {
   try {
-    return await firebase.firestore().collection('users').doc(uid).get()
+    return await firebase.firestore().collection(APIUrls.users).doc(uid).get()
   } catch (e) {
     console.log(e)
   }

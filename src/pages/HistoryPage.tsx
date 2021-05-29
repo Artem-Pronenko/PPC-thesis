@@ -5,11 +5,13 @@ import {getUserInfo} from 'api'
 import {useCollection} from 'react-firebase-hooks/firestore'
 import {ITestMinInfo} from 'types/dbTypes'
 import Loader from 'components/loader/Loader'
+import {APIUrls} from 'constant/api_urls'
 
+export const historyPageId: string = 'history'
 const HistoryPage = () => {
   const {db, user} = useContext(FirebaseContext)
   const [completedTest, setCompletedTest] = useState<ITestMinInfo>([])
-  const [testsSnapshot, loadingTests, errorLoadingTest] = useCollection(db.collection('tests'))
+  const [testsSnapshot, loadingTests, errorLoadingTest] = useCollection(db.collection(APIUrls.tests))
 
   useEffect(() => {
     (async () => {
@@ -39,7 +41,7 @@ const HistoryPage = () => {
       {completedTest?.map(test => (
         <div key={test.testId} className="history-page__card banner">
           <h3>{test.testName}</h3>
-          <NavLink className="button" to={`history/${test.testId}`}>Посмотреть</NavLink>
+          <NavLink className="button" to={`/${historyPageId}/${test.testId}`}>Посмотреть</NavLink>
         </div>
       ))}
     </div>

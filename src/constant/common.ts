@@ -15,3 +15,9 @@ export const oneModalAnswerInitialValues: IOneModalAnswerInitialValues = {
   inputVariantName: 'Ответ',
   radioButtonDoneValue: 'done',
 }
+
+export const yerDeclOfNum = ['год', 'года', 'лет']
+export const monthDeclOfNum = ['месяц', 'месяца', 'месяцев']
+export const dayDeclOfNum = ['день', 'дня', 'дней']
+export const hourDeclOfNum = ['час', 'часа', 'часов']
+export const minutesDeclOfNum = ['минута', 'минуты', 'минут']

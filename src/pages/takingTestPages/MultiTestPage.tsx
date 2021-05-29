@@ -9,24 +9,27 @@ import {FirebaseContext} from 'index'
 import {IsCheckedAnswer} from 'utiles'
 import {onSendTest} from 'api'
 import {INPUT_ANSWER} from 'constant/common'
+import {historyPageId} from '../HistoryPage'
+import {APIUrls} from 'constant/api_urls'
+import {isActive} from '../../components/TestList';
 
+export const multiTestPageId: string = 'multi'
 const MultiTestPage: FC<RouteProps> = ({match}) => {
   const slug = match.params.slug
-  const urlUsersTest = 'usersTestComplete'
-  const urlUserSettings = 'users'
   const formRef = useRef<HTMLFormElement>(null)
   const {db, user} = useContext(FirebaseContext)
-  const [responseTest, setResponse] = useState<ITest | null>(null)
+  const [responseTest, setResponseTest] = useState<ITest | null>(null)
   const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
   const [isSendTest, setIsSendTest] = useState<boolean>(false)
-  const [testSnapshot, loadingTest, error] = useDocument(db.collection('tests').doc(slug))
-  const [userCompleteSnapshot] = useDocument(db.collection('usersTestComplete').doc(user?.uid))
+  const [testSnapshot, loadingTest, error] = useDocument(db.collection(APIUrls.tests).doc(slug))
+  const [userCompleteSnapshot] = useDocument(db.collection(APIUrls.usersTestComplete).doc(user?.uid))
 
   useEffect(() => {
     // Loading test
     const data = testSnapshot?.data()
     if (!data) return
-    setResponse({
+    if (!user) return
+    setResponseTest({
       id: data?.id,
       type: data.type,
       testName: data.testName,
@@ -34,8 +37,11 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
       testDescription: data.testDescription,
       questions: data.questions,
       testEndDate: data.testEndDate,
+      forGroup: data.forGroup,
+      whoCreated: user!.uid,
+      isActiveOnExpiration: data.isActiveOnExpiration
     })
-  }, [testSnapshot])
+  }, [testSnapshot, user])
 
   useEffect(() => {
     // Loading user answers
@@ -56,6 +62,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (isActive(responseTest!) || isSendTest) return
     const formElements: Element[] = Array.from(new Set(formRef?.current?.elements))
     const answers: Array<IUserAnswer> = []
 
@@ -71,8 +78,8 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
     })
 
     await onSendTest({
-      urlTest: urlUsersTest,
-      urlTestComplete: urlUserSettings,
+      urlTest: APIUrls.usersTestComplete,
+      urlTestComplete: APIUrls.users,
       responseTestId: responseTest!.idDoc,
       answers,
     })
@@ -114,11 +121,15 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
           {isSendTest
             ? (
               <div className="taking-page__complete-block">
-                <NavLink className="button" to={`/history/${slug}`}>Посмотреть историю</NavLink>
+                <NavLink className="button" to={`/${historyPageId}/${slug}`}>Посмотреть историю</NavLink>
                 <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
               </div>
             )
-            : <button onClick={handleSubmit}>Отправить</button>
+            : <button
+              onClick={handleSubmit}
+              className={(isSendTest || isActive(responseTest)) ? 'disabled' : ''}>
+              Отправить
+            </button>
           }
         </div>
       )}

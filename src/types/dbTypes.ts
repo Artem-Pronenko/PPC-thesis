@@ -27,9 +27,12 @@ export interface ITest {
   id?: string
   idDoc: string
   questions: ITestListItem[]
+  forGroup: string
+  whoCreated: string
   testName: string
   testEndDate: string
   testDescription: string
+  isActiveOnExpiration: boolean
 }
 
 interface ITestAnswer {
@@ -63,13 +66,13 @@ export type ITestMinInfo = Array<{ testName: string, testId: string }>
 
 export interface IUserInitialData {
   displayName: string
-  uid: string
+  idDoc: string
   group: string
   photoURL: string
   completeTestId: Array<string>
 }
 
-export type TGroups = Array<number>
+export type TGroups = Array<string>
 
 
 export {DocumentReference}

@@ -20,7 +20,7 @@ const testList = [
   },
 ]
 
-
+export const studyPageId: string = 'study'
 const StudyPage = () => {
   return (
     <div>

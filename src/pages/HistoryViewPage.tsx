@@ -7,6 +7,7 @@ import {IUserAnswer} from 'types/dbTypes'
 import TestForm from 'components/TestForm'
 import {IsCheckedAnswer} from 'utiles'
 import Loader from 'components/loader/Loader'
+import {APIUrls} from 'constant/api_urls'
 
 const HistoryViewPage: FC<RouteProps> = ({match}) => {
   const slug: string = match.params.slug
@@ -15,9 +16,9 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
   const [responseTest, setResponse] = useState<ITest | null>(null)
   const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
   const [userCompleteSnapshot, loadingCompleteTest, errorLoadingCompleteTest] = useDocument(
-    db.collection('usersTestComplete').doc(user?.uid)
+    db.collection(APIUrls.usersTestComplete).doc(user?.uid)
   )
-  const [testSnapshot, loadingTest, errorLoadingTest] = useDocument(db.collection('tests').doc(slug))
+  const [testSnapshot, loadingTest, errorLoadingTest] = useDocument(db.collection(APIUrls.tests).doc(slug))
 
   useEffect(() => {
     // Loading test
@@ -31,8 +32,11 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
       testDescription: data.testDescription,
       questions: data.questions,
       testEndDate: data.testEndDate,
+      forGroup: data.forGroup,
+      whoCreated: user!.uid,
+      isActiveOnExpiration: data.isActiveOnExpiration,
     })
-  }, [testSnapshot])
+  }, [testSnapshot, user])
 
   useEffect(() => {
     // Loading user answers

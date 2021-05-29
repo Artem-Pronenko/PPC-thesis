@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {ChangeEvent, useContext, useEffect, useState} from 'react'
 import {FirebaseContext} from 'index'
 import {noUserImg} from 'constant/icons'
 import {useDocument} from 'react-firebase-hooks/firestore'
@@ -6,15 +6,18 @@ import {TGroups} from 'types/dbTypes'
 import useFirestoreSet from 'hooks/useFirestoreSet'
 import Loader from 'components/loader/Loader'
 import {getUserInfo} from 'api'
+import SelectInput from 'components/SelectInput'
+import {APIUrls} from 'constant/api_urls'
 
+export const userProfilePageId: string = 'profile'
 const UserProfilePage = () => {
   const {user, db} = useContext(FirebaseContext)
   const [isEditProfile, setIsEditProfile] = useState<boolean>(false)
-  const [groups, setGroups] = useState<TGroups>()
+  const [groups, setGroups] = useState<TGroups>([])
   const [choseGroups, setChoseGroups] = useState<string>('')
   const [userGroup, setUserGroup] = useState<string>('')
-  const [groupsSnapshot, loadingGroups] = useDocument(db.collection('groups').doc('groups'))
-  const {setDB} = useFirestoreSet('users')
+  const [groupsSnapshot, loadingGroups] = useDocument(db.collection(APIUrls.groups).doc(APIUrls.groups))
+  const {setDB} = useFirestoreSet(APIUrls.users)
 
   useEffect(() => {
     const groupsData = groupsSnapshot?.data()
@@ -60,16 +63,14 @@ const UserProfilePage = () => {
         <Loader isMini={true}/>
         : (
           <div className="user-profile__settings">
-            <label htmlFor="select-group" className="user-profile__select-label">Выбрать группу:</label>
-            <select id="select-group" onChange={(e) => {
-              onChange()
-              setChoseGroups(e.target.value)
-            }} >
-              <option value="user_group" hidden>{userGroup}</option>
-              {groups?.map((e, index) => (
-                <option key={`${e}`} value={e}>{e}</option>
-              ))}
-            </select>
+            <SelectInput
+              selectItem={userGroup}
+              items={groups}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                onChange()
+                setChoseGroups(e.target.value)
+              }}
+            />
           </div>
         )}
       {isEditProfile && <button onClick={onSaveChange} type="submit">Сохранить</button>}

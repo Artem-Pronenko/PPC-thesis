@@ -6,11 +6,12 @@ import {FirebaseContext} from 'index'
 import useFirestoreSet from 'hooks/useFirestoreSet'
 import {IUserInitialData} from 'types/dbTypes'
 import {noUserImg} from 'constant/icons'
+import {APIUrls} from 'constant/api_urls'
 
-
+export const authPageId: string = 'auth'
 const AuthPage = () => {
   const {user} = useContext(FirebaseContext)
-  const {setDB, response} = useFirestoreSet('users')
+  const {setDB, response} = useFirestoreSet(APIUrls.users)
 
   useEffect(() => {
     ;(async () => {
@@ -20,7 +21,7 @@ const AuthPage = () => {
       const body: IUserInitialData = {
         group: 'Нет группы',
         displayName: user.displayName!,
-        uid: user.uid,
+        idDoc: user.uid,
         photoURL: user.photoURL ?? noUserImg,
         completeTestId: []
       }
@@ -36,7 +37,7 @@ const AuthPage = () => {
   }
 
   if (user) {
-    return <Redirect to={'/'}/>
+    return <Redirect to={`/`}/>
   }
   return (
     <div className="auth-page">

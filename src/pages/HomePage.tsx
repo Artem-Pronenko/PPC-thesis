@@ -6,11 +6,13 @@ import {BoySvg, DropArrowSvg, noUserImg} from 'constant/icons'
 import {FirebaseContextProps, ITest, IUserSendTest} from 'types/dbTypes'
 import {FirebaseContext} from 'index'
 import {useCollection, useDocument} from 'react-firebase-hooks/firestore'
+import {userProfilePageId} from './UserProfilePage'
+import {APIUrls} from 'constant/api_urls'
 
 const dropList = [
   {
     text: 'Мой профиль',
-    path: '/profile',
+    path: `/${userProfilePageId}`,
   },
   {
     text: 'Что-то еще',
@@ -22,9 +24,9 @@ const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
   const [userTestSnapshot, setUserTestSnapshot] = useState<ITest[]>([])
   const [userTestComplete, setUserTestComplete] = useState<IUserSendTest>()
-  const [testsLeft, setTestsLeft] = useState<string>('0')
-  const [testListSnapshot, testListLoading] = useCollection(db.collection('tests'))
-  const [userTestCompleteSnapshot] = useDocument(db.collection('usersTestComplete').doc(user?.uid))
+    const [testsLeft, setTestsLeft] = useState<string>('0')
+  const [testListSnapshot, testListLoading] = useCollection(db.collection(APIUrls.tests))
+  const [userTestCompleteSnapshot] = useDocument(db.collection(APIUrls.usersTestComplete).doc(user?.uid))
 
 
   useEffect(() => {
@@ -38,11 +40,14 @@ const HomePage = () => {
         testName: testListItem.testName,
         type: testListItem.type,
         questions: testListItem.questions,
+        forGroup: testListItem.forGroup,
+        whoCreated: user!.uid,
+        isActiveOnExpiration: testListItem.isActiveOnExpiration
       }])
     })
     return () => {
     }
-  }, [testListSnapshot])
+  }, [testListSnapshot, user])
 
 
   useEffect(() => {
@@ -56,12 +61,14 @@ const HomePage = () => {
     })
   }, [userTestCompleteSnapshot, userTestSnapshot])
 
+  if (!user) return <strong>Нет аккаунат!</strong>
+
   return (
     <div className="home flew-wrapper">
       <div className="left-content">
         <div className="banner home__banner">
           <div className="banner__text">
-            <h2 className="banner__title">Привет {user?.displayName}</h2>
+            <h2 className="banner__title">Привет {user.displayName}</h2>
             <span className="banner-subtitle">Удачного прохождения тестов!)</span>
           </div>
           <div className="banner__image">
@@ -87,7 +94,7 @@ const HomePage = () => {
             <li className="user-button">
               <DropDown dropList={dropList}>
                 <div className="user-button__avatar">
-                  <img src={user?.photoURL ?? noUserImg} alt="user avatar"/>
+                  <img src={user.photoURL ?? noUserImg} alt="user avatar"/>
                 </div>
                 <DropArrowSvg className="user-button__icon"/>
               </DropDown>
