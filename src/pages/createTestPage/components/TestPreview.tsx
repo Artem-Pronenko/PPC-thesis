@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {ITestListItem} from 'types/dbTypes'
+import {ITestListItem} from 'types/testsTypes'
 
 interface TestPreviewListProps {
   testList: Array<ITestListItem>

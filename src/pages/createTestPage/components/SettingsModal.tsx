@@ -6,7 +6,7 @@ import {TGroups} from 'types/dbTypes'
 import {getUserInfo} from 'api'
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import {uid} from 'uid'
-import {APIUrls} from '../../../constant/api_urls';
+import {APIUrls} from 'constant/api_urls'
 
 interface SettingsModalProps {
   setTestName: Dispatch<string>
@@ -53,10 +53,9 @@ const SettingsModal: FC<SettingsModalProps> = ({
   useEffect(() => {
     (async () => {
       if (!user) return
-      const userData = await getUserInfo(user.uid)
-      if (!userData) return
-      const userInfo = userData.data()
-      setUserGroup(userInfo?.group)
+      const userInfo = await getUserInfo(user.uid)
+      if (!userInfo) return
+      setUserGroup(userInfo.group)
     })()
 
   }, [user])

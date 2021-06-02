@@ -1,6 +1,6 @@
 import {Switch, Route} from 'react-router-dom'
 import React from 'react'
-import HomePage from 'pages/HomePage'
+import HomePage from 'pages/HomePage/HomePage'
 import UserProfilePage, {userProfilePageId} from 'pages/UserProfilePage'
 import AuthPage, {authPageId} from 'pages/AuthPage'
 import Study, {studyPageId} from 'pages/StudyPage'

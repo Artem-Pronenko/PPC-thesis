@@ -7,6 +7,7 @@ import useFirestoreSet from 'hooks/useFirestoreSet'
 import {IUserInitialData} from 'types/dbTypes'
 import {noUserImg} from 'constant/icons'
 import {APIUrls} from 'constant/api_urls'
+import {noGroup} from 'constant/api_constants'
 
 export const authPageId: string = 'auth'
 const AuthPage = () => {
@@ -19,7 +20,7 @@ const AuthPage = () => {
       const res = await getOldUser(user.uid)
       if (res?.data()) return
       const body: IUserInitialData = {
-        group: 'Нет группы',
+        group: noGroup,
         displayName: user.displayName!,
         idDoc: user.uid,
         photoURL: user.photoURL ?? noUserImg,

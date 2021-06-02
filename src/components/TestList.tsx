@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import {NavLink} from 'react-router-dom'
-import {ITest} from 'types/dbTypes'
+import {ITest} from 'types/testsTypes'
 import testSVG from 'assets/icons/default_test_logo.svg'
 import {studyPageId} from 'pages/StudyPage'
 import {declOfNum} from 'utiles'

@@ -3,7 +3,7 @@ import FloatingInput from 'components/floatingInput/FloatingInput'
 import ButtonWave from 'components/buttonWave/ButtonWave'
 import CreateField from './CreateField'
 import {INPUT_ANSWER, oneModalAnswerInitialValues, questionType} from 'constant/common'
-import {ITestListItem} from 'types/dbTypes'
+import {ITestListItem} from 'types/testsTypes'
 import {uid} from 'uid'
 
 interface QuestionModalOneAnswerProps {

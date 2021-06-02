@@ -11,7 +11,7 @@ import {FirebaseContextProps} from 'types/dbTypes'
 import 'firebase/firestore'
 import Loader from 'components/loader/Loader'
 import {HomeSvg, PersonSvg, StudySvg, HistorySvg} from 'constant/icons'
-import {authPageId} from './pages/AuthPage';
+import {authPageId} from 'pages/AuthPage'
 
 const navList = [
   {

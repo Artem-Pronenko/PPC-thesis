@@ -1,5 +1,5 @@
 import React, {FC, LegacyRef} from 'react'
-import {ITest} from 'types/dbTypes'
+import {ITest} from 'types/testsTypes'
 import {INPUT_ANSWER, questionType} from 'constant/common'
 import {uid} from 'uid'
 

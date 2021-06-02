@@ -2,7 +2,7 @@ import React, {Dispatch, FC, FormEvent, SetStateAction, useRef, useState} from '
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import RadioButton from 'components/radioButton/RadioButton'
 import ButtonWave from 'components/buttonWave/ButtonWave'
-import {ITestListItem} from 'types/dbTypes'
+import {ITestListItem} from 'types/testsTypes'
 import {INPUT_ANSWER, questionType} from 'constant/common'
 import {uid} from 'uid'
 

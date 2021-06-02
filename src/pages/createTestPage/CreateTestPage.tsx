@@ -1,7 +1,7 @@
 import React, {FC, useContext, useState} from 'react'
 import Modal from 'components/Modal'
 import {RouteProps} from 'types/routeTypes'
-import {ITest, ITestListAnswer, ITestListItem} from 'types/dbTypes'
+import {ITest, ITestListAnswer, ITestListItem} from 'types/testsTypes'
 import {Modal2, Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYesOrNo from './components/QuestionModalYesOrNo'

@@ -1,5 +1,4 @@
 import firebase from 'firebase/app'
-import DocumentReference = firebase.firestore.DocumentReference
 import DocumentData = firebase.firestore.DocumentData
 
 export type FirebaseContextProps = {
@@ -7,42 +6,6 @@ export type FirebaseContextProps = {
   auth: firebase.auth.Auth
   user: firebase.User | null
   db: firebase.firestore.Firestore
-}
-
-export interface IAnswerOptions {
-  answerText: string
-  id: string
-}
-
-export interface ITestListItem {
-  id: string
-  question: string
-  type: string
-  answerOptions: Array<IAnswerOptions>
-  answer?: string
-}
-
-export interface ITest {
-  type: string
-  id?: string
-  idDoc: string
-  questions: ITestListItem[]
-  forGroup: string
-  whoCreated: string
-  testName: string
-  testEndDate: string
-  testDescription: string
-  isActiveOnExpiration: boolean
-}
-
-interface ITestAnswer {
-  question: string
-  correctAnswer: string
-}
-
-export interface ITestListAnswer {
-  idDoc: string
-  answers: ITestAnswer[]
 }
 
 export interface IUserAnswer {
@@ -60,10 +23,6 @@ export interface IUserSendTest {
   completeTest: IUserCompleteTest[]
 }
 
-export type ITestMinInfo = Array<{ testName: string, testId: string }>
-
-
-
 export interface IUserInitialData {
   displayName: string
   idDoc: string
@@ -74,6 +33,4 @@ export interface IUserInitialData {
 
 export type TGroups = Array<string>
 
-
-export {DocumentReference}
 export type {DocumentData}

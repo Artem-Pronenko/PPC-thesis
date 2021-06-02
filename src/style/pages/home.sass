@@ -57,6 +57,22 @@ $user-button-avatar-size: 2.5rem
     width: 11.25rem
 
 .test
+  &-banner
+    &__sort
+      width: $max-width-left-content
+      +flex-between
+
+      &-list
+        flex-basis: 60%
+        +flex-between
+
+      &-item
+        cursor: pointer
+
+        &.active
+          border-bottom: 1px solid black
+          font-weight: bold
+
   &-list
     max-width: $max-width-left-content
     overflow-y: scroll

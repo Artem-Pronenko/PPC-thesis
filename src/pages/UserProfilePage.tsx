@@ -28,10 +28,9 @@ const UserProfilePage = () => {
   useEffect(() => {
     (async () => {
       if (!user) return
-      const userData = await getUserInfo(user.uid)
-      if (!userData) return
-      const userInfo = userData.data()
-      setUserGroup(userInfo?.group)
+      const userInfo = await getUserInfo(user.uid)
+      if (!userInfo) return
+      setUserGroup(userInfo.group)
     })()
 
   }, [user])
@@ -47,7 +46,6 @@ const UserProfilePage = () => {
 
   const onChange = () => {
     setIsEditProfile(true)
-
   }
 
   return (

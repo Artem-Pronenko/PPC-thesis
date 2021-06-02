@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom'
 import {FirebaseContext} from 'index'
 import {getUserInfo} from 'api'
 import {useCollection} from 'react-firebase-hooks/firestore'
-import {ITestMinInfo} from 'types/dbTypes'
+import {ITestMinInfo} from 'types/testsTypes'
 import Loader from 'components/loader/Loader'
 import {APIUrls} from 'constant/api_urls'
 
@@ -16,12 +16,11 @@ const HistoryPage = () => {
   useEffect(() => {
     (async () => {
       if (!user) return
-      const userData = await getUserInfo(user.uid)
-      if (!userData) return
-      const completeTest = userData.data()
+      const userInfo = await getUserInfo(user.uid)
+      if (!userInfo) return
       testsSnapshot?.docs.forEach(testData => {
         const test = testData.data()
-        if (completeTest?.completeTestId.includes(test.idDoc)) {
+        if (userInfo.completeTestId.includes(test.idDoc)) {
           const testName = test.testName
           const testId = test.idDoc
           setCompletedTest(prevState => [...prevState, {testId, testName}])

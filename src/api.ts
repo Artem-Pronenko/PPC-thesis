@@ -71,11 +71,20 @@ export const onSendTest = async ({responseTestId, urlTest, urlTestComplete, answ
 
 }
 
-export const getUserInfo = async (uid: string): Promise<firebase.firestore.DocumentSnapshot | void> => {
+export const getUserInfo = async (uid: string): Promise<IUserInitialData | null> => {
   try {
-    return await firebase.firestore().collection(APIUrls.users).doc(uid).get()
+    const userData = await firebase.firestore().collection(APIUrls.users).doc(uid).get()
+    const userInfo = userData.data()
+    return {
+      idDoc: userInfo?.idDoc,
+      photoURL: userInfo?.photoURL,
+      group: userInfo?.group,
+      displayName: userInfo?.displayName,
+      completeTestId: userInfo?.completeTestId,
+    }
   } catch (e) {
     console.log(e)
+    return null
   }
 }
 
