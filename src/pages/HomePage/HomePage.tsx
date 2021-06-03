@@ -1,10 +1,10 @@
-import React, {ChangeEvent, useCallback, useContext, useEffect, useState} from 'react'
+import React, {ChangeEvent, SyntheticEvent, useCallback, useContext, useEffect, useState} from 'react'
 import {useCollection, useDocument} from 'react-firebase-hooks/firestore'
 import TestList, {isActive} from 'components/TestList'
 import DropDown from 'components/dropDown/DropDown'
 import Loader from 'components/loader/Loader'
 import TestToggler from './components/TestToggler'
-import {BoySvg, DropArrowSvg, noUserImg} from 'constant/icons'
+import {BoySvg, DropArrowSvg, noUserImg, placeholderImage} from 'constant/icons'
 import {APIUrls} from 'constant/api_urls'
 import {APITestField, noGroup} from 'constant/api_constants'
 import {
@@ -52,12 +52,7 @@ const HomePage = () => {
         setUserTestSnapshot(testListMyGroup)
         break
       case sortByName:
-        setUserTestSnapshot(testList.filter(e => {
-          const reg = new RegExp(searchValue,'gi')
-          if (e.testName.match(reg)) {
-            return e
-          }
-        }))
+        setUserTestSnapshot(testList.filter(e => e.testName.match(new RegExp(searchValue,'gi'))))
         break
       default:
         setUserTestSnapshot(testList || [])
@@ -175,7 +170,7 @@ const HomePage = () => {
             <li className="user-button">
               <DropDown dropList={dropList}>
                 <div className="user-button__avatar">
-                  <img src={user.photoURL ?? noUserImg} alt="user avatar"/>
+                  <img src={user.photoURL ?? noUserImg} alt="user avatar" onError={((e: SyntheticEvent<HTMLImageElement>) => (e.target as HTMLImageElement).src = placeholderImage)}/>
                 </div>
                 <DropArrowSvg className="user-button__icon"/>
               </DropDown>

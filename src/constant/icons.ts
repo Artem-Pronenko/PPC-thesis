@@ -26,3 +26,4 @@ export const LogoutSvg = logoutSvg
 export const HistorySvg = historySvg
 export const SettingsSvg = settingsSvg
 export {noUserImg}
+export const placeholderImage = 'https://via.placeholder.com/150/000000'
