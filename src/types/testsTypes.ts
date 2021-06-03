@@ -1,13 +1,12 @@
 import firebase from 'firebase'
 
 export interface IGetTestList {
-  sort?: boolean,
+  sort?: string,
   sortOptions?: {
     sortField: string
     sortOp: firebase.firestore.WhereFilterOp
     sortValue: string
   }
-  isActiveSort?: boolean
 }
 
 export type ITestMinInfo = Array<{ testName: string, testId: string }>

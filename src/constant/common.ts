@@ -37,7 +37,8 @@ export const dropList = [
 ]
 export const sortAllTests: string = 'allTests'
 export const myGroup: string = 'myGroup'
-export const canStillPass: string = 'canStillPass'
+export const onlyActive: string = 'onlyActive'
+export const sortByName: string = 'sortByName'
 
 export const initialSortList: IInitialSortList = [
   {
@@ -53,6 +54,6 @@ export const initialSortList: IInitialSortList = [
   {
     text: 'Еще можно сдать',
     active: false,
-    id: canStillPass
+    id: onlyActive
   }
 ]

@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {ChangeEvent, useCallback, useContext, useEffect, useState} from 'react'
 import {useCollection, useDocument} from 'react-firebase-hooks/firestore'
 import TestList, {isActive} from 'components/TestList'
 import DropDown from 'components/dropDown/DropDown'
@@ -7,12 +7,21 @@ import TestToggler from './components/TestToggler'
 import {BoySvg, DropArrowSvg, noUserImg} from 'constant/icons'
 import {APIUrls} from 'constant/api_urls'
 import {APITestField, noGroup} from 'constant/api_constants'
-import {canStillPass, dropList, IInitialSortList, initialSortList, myGroup, sortAllTests} from 'constant/common'
+import {
+  onlyActive,
+  dropList,
+  IInitialSortList,
+  initialSortList,
+  myGroup,
+  sortAllTests,
+  sortByName
+} from 'constant/common'
 import {FirebaseContextProps, IUserInitialData, IUserSendTest} from 'types/dbTypes'
 import {IGetTestList, ITest} from 'types/testsTypes'
 import {testListItemModel} from 'models/tests'
 import {getUserInfo} from 'api'
 import {FirebaseContext} from 'index'
+import SearchInput from 'components/SearchInput'
 
 const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
@@ -24,26 +33,36 @@ const HomePage = () => {
   const [userTestCompleteSnapshot] = useDocument(db.collection(APIUrls.usersTestComplete).doc(user?.uid))
   const [sortList, setSortList] = useState<IInitialSortList>(initialSortList)
   const [initialSortBy, setInitialSortBy] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string>('')
 
-  const getTestsList = useCallback(async ({
-                                            sort = false,
-                                            sortOptions,
-                                            isActiveSort = false
-                                          }: IGetTestList): Promise<void> => {
+  const getTestsList = useCallback(async ({sort = sortAllTests, sortOptions}: IGetTestList): Promise<void> => {
     if (!testListSnapshot) return
-    if (sort && sortOptions) {
-      const res = await testListSnapshot.query.where(sortOptions.sortField, sortOptions.sortOp, sortOptions.sortValue).get()
-      const testList = res.docs.map(item => testListItemModel(item.data()))
-      setUserTestSnapshot(testList)
-      return
-    }
     const testList = testListSnapshot.docs.map(item => testListItemModel(item.data()))
-    if (isActiveSort) {
-      setUserTestSnapshot(testList.filter(e => !isActive(e)))
-      return
+    switch (sort) {
+      case sortAllTests:
+        setUserTestSnapshot(testList)
+        break
+      case onlyActive:
+        setUserTestSnapshot(testList.filter(e => !isActive(e)))
+        break
+      case myGroup:
+        if (!sortOptions) return
+        const res = await testListSnapshot.query.where(sortOptions.sortField, sortOptions.sortOp, sortOptions.sortValue).get()
+        const testListMyGroup = res.docs.map(item => testListItemModel(item.data()))
+        setUserTestSnapshot(testListMyGroup)
+        break
+      case sortByName:
+        setUserTestSnapshot(testList.filter(e => {
+          const reg = new RegExp(searchValue,'gi')
+          if (e.testName.match(reg)) {
+            return e
+          }
+        }))
+        break
+      default:
+        setUserTestSnapshot(testList || [])
     }
-    setUserTestSnapshot(testList)
-  }, [testListSnapshot])
+  }, [testListSnapshot, searchValue])
 
   useEffect(() => {
     getTestsList({}).then()
@@ -77,12 +96,15 @@ const HomePage = () => {
         break
       case myGroup:
         getTestsList({
-          sort: true,
+          sort: myGroup,
           sortOptions: {sortOp: '==', sortField: APITestField.forGroup, sortValue: userInfo?.group ?? noGroup}
         }).then()
         break
-      case canStillPass:
-        getTestsList({isActiveSort: true}).then()
+      case onlyActive:
+        getTestsList({sort: onlyActive}).then()
+        break
+      case sortByName:
+        getTestsList({sort: sortByName}).then()
         break
     }
   }, [initialSortBy, getTestsList, userInfo])
@@ -116,6 +138,11 @@ const HomePage = () => {
     }))
   }
 
+  const onSearchTest = (e: ChangeEvent<HTMLInputElement>) => {
+    setInitialSortBy(sortByName)
+    setSearchValue(e.target.value)
+  }
+
   if (!user) return <strong>Ошибка аккаунт не найден!</strong>
   return (
     <div className="home flew-wrapper">
@@ -143,10 +170,7 @@ const HomePage = () => {
         <nav>
           <ul className="right-content__navigation">
             <li>
-              <form role="search" className="search-form">
-                <input className="search-input" type="search" placeholder="Название теста..." required/>
-                <button className="search-form-button" type="submit">Go!</button>
-              </form>
+              <SearchInput onChange={onSearchTest}/>
             </li>
             <li className="user-button">
               <DropDown dropList={dropList}>
