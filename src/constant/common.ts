@@ -1,5 +1,5 @@
-import {IOneModalAnswerInitialValues} from 'types/questionsModalTypes'
-import {userProfilePageId} from '../pages/UserProfilePage';
+import {IModalTextAnswerValues, IModalOneAnswerValues} from 'types/questionsModalTypes'
+import {userProfilePageId} from 'pages/UserProfilePage'
 
 export const INPUT_ANSWER = 'INPUT_ANSWER'
 export const INPUT_QUESTION = 'INPUT_QUESTION'
@@ -9,12 +9,17 @@ export const ERROR_CREATE_TEST = 'Ошибка при создании тест�
 export const questionType = {
   ONE_ANSWER: 'ONE_ANSWER',
   YES_OR_NO_ANSWER: 'YES_OR_NO_ANSWER',
+  TEXT_ANSWER: 'TEXT_ANSWER'
 }
 
-export const oneModalAnswerInitialValues: IOneModalAnswerInitialValues = {
+export const modalOneAnswerInitialValues: IModalOneAnswerValues = {
   questionInputName: 'Вопрос с несколькими ответами',
   inputVariantName: 'Ответ',
   radioButtonDoneValue: 'done',
+}
+
+export const modalTestAnswerInitialValues: IModalTextAnswerValues = {
+  questionInputName: 'Вопрос с текстовым ответом',
 }
 
 export const yerDeclOfNum = ['год', 'года', 'лет']

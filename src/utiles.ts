@@ -8,12 +8,12 @@ export const createIdCollection = (collection: string) => {
 interface IIsCheckedAnswer {
   currentAnswerId: string,
   currentQuestionId: string,
-  userAnswer: IUserAnswer[] | null
+  userAnswers: IUserAnswer[] | null
 }
 
-export const IsCheckedAnswer = ({currentAnswerId, currentQuestionId, userAnswer}: IIsCheckedAnswer): boolean => {
+export const IsCheckedAnswer = ({currentAnswerId, currentQuestionId, userAnswers}: IIsCheckedAnswer): boolean => {
   let isChecked: boolean = false
-  userAnswer?.forEach(e => {
+  userAnswers?.forEach(e => {
     if (e.questionId === currentQuestionId)
       isChecked = currentAnswerId === e.answerId
   })

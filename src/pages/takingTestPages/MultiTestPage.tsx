@@ -9,10 +9,10 @@ import {useDocument} from 'react-firebase-hooks/firestore'
 import {FirebaseContext} from 'index'
 import {IsCheckedAnswer} from 'utiles'
 import {onSendTest} from 'api'
-import {INPUT_ANSWER} from 'constant/common'
+import {INPUT_ANSWER, questionType} from 'constant/common'
 import {historyPageId} from '../HistoryPage'
 import {APIUrls} from 'constant/api_urls'
-import {isActive} from '../../components/TestList';
+import {isActive} from 'components/TestList'
 
 export const multiTestPageId: string = 'multi'
 const MultiTestPage: FC<RouteProps> = ({match}) => {
@@ -20,7 +20,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
   const formRef = useRef<HTMLFormElement>(null)
   const {db, user} = useContext(FirebaseContext)
   const [responseTest, setResponseTest] = useState<ITest | null>(null)
-  const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
+  const [userAnswers, setUserAnswers] = useState<IUserAnswer[] | null>(null)
   const [isSendTest, setIsSendTest] = useState<boolean>(false)
   const [testSnapshot, loadingTest, error] = useDocument(db.collection(APIUrls.tests).doc(slug))
   const [userCompleteSnapshot] = useDocument(db.collection(APIUrls.usersTestComplete).doc(user?.uid))
@@ -49,7 +49,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
     const data = userCompleteSnapshot?.data()
     if (!data) return
     if (!data?.completeTestId.includes(slug)) {
-      setUserAnswer([])
+      setUserAnswers([])
       return
     }
     setIsSendTest(true)
@@ -58,7 +58,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
     if (completeTestList.length <= 0) return
     const completeTest: IUserCompleteTest = completeTestList.filter(e => e.testId === slug)[0]
 
-    setUserAnswer(completeTest.answers)
+    setUserAnswers(completeTest.answers)
   }, [userCompleteSnapshot, slug])
 
   const handleSubmit = async (e: FormEvent) => {
@@ -71,6 +71,11 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
       if (!(item instanceof HTMLInputElement)) return
       if (item.dataset.typeInput === INPUT_ANSWER) {
         if (!item.checked) return
+        answers.push({
+          answerId: item.value,
+          questionId: item.dataset.question!
+        })
+      } else if (item.dataset.typeInput === questionType.TEXT_ANSWER) {
         answers.push({
           answerId: item.value,
           questionId: item.dataset.question!
@@ -95,7 +100,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
         <div>
           <h3 className="taking-page__title">{responseTest.testName}</h3>
           <span className="taking-page__subtitle">{responseTest.testDescription}</span>
-          {userAnswer && (
+          {userAnswers && (
             <TestForm
               formRef={formRef}
               isSendTest={isSendTest}
@@ -103,11 +108,11 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
               isChecked={(currentAnswerId, currentQuestionId) => IsCheckedAnswer({
                 currentAnswerId,
                 currentQuestionId,
-                userAnswer
+                userAnswers
               })}
             />
           )}
-          {responseTest && !userAnswer && (
+          {responseTest && !userAnswers && (
             <TestForm
               formRef={formRef}
               isSendTest={isSendTest}
@@ -115,7 +120,7 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
               isChecked={(currentAnswerId, currentQuestionId) => IsCheckedAnswer({
                 currentAnswerId,
                 currentQuestionId,
-                userAnswer
+                userAnswers
               })}
             />
           )}

@@ -14,7 +14,7 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
   const formRef = useRef<HTMLFormElement>(null)
   const {db, user} = useContext(FirebaseContext)
   const [responseTest, setResponse] = useState<ITest | null>(null)
-  const [userAnswer, setUserAnswer] = useState<IUserAnswer[] | null>(null)
+  const [userAnswers, setUserAnswers] = useState<IUserAnswer[] | null>(null)
   const [userCompleteSnapshot, loadingCompleteTest, errorLoadingCompleteTest] = useDocument(
     db.collection(APIUrls.usersTestComplete).doc(user?.uid)
   )
@@ -43,7 +43,7 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
     const data = userCompleteSnapshot?.data()
     if (!data) return
     if (!data?.completeTestId.includes(slug)) {
-      setUserAnswer([])
+      setUserAnswers([])
       return
     }
 
@@ -51,7 +51,7 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
     if (completeTestList.length <= 0) return
     const completeTest: IUserCompleteTest = completeTestList.filter(e => e.testId === slug)[0]
 
-    setUserAnswer(completeTest.answers)
+    setUserAnswers(completeTest.answers)
   }, [userCompleteSnapshot, slug])
 
 
@@ -70,10 +70,11 @@ const HistoryViewPage: FC<RouteProps> = ({match}) => {
             formRef={formRef}
             isSendTest={true}
             responseTest={responseTest}
+            userAnswers={userAnswers ?? []}
             isChecked={(currentAnswerId, currentQuestionId) => IsCheckedAnswer({
               currentAnswerId,
               currentQuestionId,
-              userAnswer
+              userAnswers
             })}
           />
         </div>

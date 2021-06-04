@@ -22,6 +22,7 @@ import {testListItemModel} from 'models/tests'
 import {getUserInfo} from 'api'
 import {FirebaseContext} from 'index'
 import SearchInput from 'components/SearchInput'
+import Banners from './components/Banners';
 
 const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
@@ -52,7 +53,10 @@ const HomePage = () => {
         setUserTestSnapshot(testListMyGroup)
         break
       case sortByName:
-        setUserTestSnapshot(testList.filter(e => e.testName.match(new RegExp(searchValue,'gi'))))
+        setUserTestSnapshot(testList.filter(e => {
+          const reg = new RegExp(searchValue, 'gi')
+          if (e.testName.match(reg) || e.testDescription.match(reg)) return e
+        }))
         break
       default:
         setUserTestSnapshot(testList || [])
@@ -170,7 +174,11 @@ const HomePage = () => {
             <li className="user-button">
               <DropDown dropList={dropList}>
                 <div className="user-button__avatar">
-                  <img src={user.photoURL ?? noUserImg} alt="user avatar" onError={((e: SyntheticEvent<HTMLImageElement>) => (e.target as HTMLImageElement).src = placeholderImage)}/>
+                  <img
+                    src={user.photoURL ?? noUserImg}
+                    alt="user avatar"
+                    onError={((e: SyntheticEvent<HTMLImageElement>) => (e.target as HTMLImageElement).src = placeholderImage)}
+                  />
                 </div>
                 <DropArrowSvg className="user-button__icon"/>
               </DropDown>
@@ -178,14 +186,8 @@ const HomePage = () => {
           </ul>
         </nav>
         <div className="banners">
-          <div className="banner test-info home__banner">
-            <span className="test-info__number">{userTestComplete?.completeTest.length ?? 0}</span>
-            <h4 className="test-info__title">Тестов пройдено</h4>
-          </div>
-          <div className="banner test-info home__banner">
-            <span className="test-info__number">{testsLeft}</span>
-            <h4 className="test-info__title">Тестов осталось</h4>
-          </div>
+          <Banners test={`${userTestComplete?.completeTest?.length || '0'}`} label={'Тестов пройдено'}/>
+          <Banners test={testsLeft} label={'Тестов осталось'}/>
         </div>
       </div>
     </div>

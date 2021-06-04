@@ -2,7 +2,7 @@ import React, {Dispatch, FC, FormEvent, SetStateAction, useCallback, useEffect, 
 import FloatingInput from 'components/floatingInput/FloatingInput'
 import ButtonWave from 'components/buttonWave/ButtonWave'
 import CreateField from './CreateField'
-import {INPUT_ANSWER, oneModalAnswerInitialValues, questionType} from 'constant/common'
+import {INPUT_ANSWER, modalOneAnswerInitialValues, questionType} from 'constant/common'
 import {ITestListItem} from 'types/testsTypes'
 import {uid} from 'uid'
 
@@ -30,7 +30,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
     setInputGroup(prevState => {
       return [...prevState, CreateField({
         inputId,
-        radioButtonDoneName: oneModalAnswerInitialValues.radioButtonDoneValue,
+        radioButtonDoneName: modalOneAnswerInitialValues.radioButtonDoneValue,
         radioButtonDoneId: radioButtonValue,
         deleteField,
       })]
@@ -75,7 +75,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
 
   return (
     <div className="create-question-modal">
-      <h3 className="create-question-modal__title">{oneModalAnswerInitialValues.questionInputName}</h3>
+      <h3 className="create-question-modal__title">{modalOneAnswerInitialValues.questionInputName}</h3>
       <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
         <FloatingInput
           name={'Ваш вопрос'}

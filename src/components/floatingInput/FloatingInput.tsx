@@ -9,6 +9,8 @@ interface FloatingInputProps {
   inputDataSet?: string
   inputDataSetId?: string
   value?: string
+  dataQuestion?: string
+  isDisabled?: boolean
 }
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -19,6 +21,8 @@ const FloatingInput: FC<FloatingInputProps> = ({
                                                  inputDataSet = '',
                                                  inputDataSetId = '',
                                                  value,
+                                                 dataQuestion,
+                                                 isDisabled = false
                                                }) => {
   return (
     <div className={style.form__group}>
@@ -33,6 +37,8 @@ const FloatingInput: FC<FloatingInputProps> = ({
         data-id={inputDataSetId}
         value={value}
         required
+        data-question={dataQuestion}
+        disabled={isDisabled}
       />
       <label htmlFor={id} className={style.form__label}>{name}</label>
     </div>

@@ -2,7 +2,7 @@ import React, {FC, useContext, useState} from 'react'
 import Modal from 'components/Modal'
 import {RouteProps} from 'types/routeTypes'
 import {ITest, ITestListAnswer, ITestListItem} from 'types/testsTypes'
-import {Modal2, Modal3} from 'components/QuestionModalContent'
+import {Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYesOrNo from './components/QuestionModalYesOrNo'
 import Loader from 'components/loader/Loader'
@@ -15,6 +15,7 @@ import {SettingsSvg} from 'constant/icons'
 import SettingsModal from './components/SettingsModal'
 import {FirebaseContext} from 'index'
 import {APIUrls} from 'constant/api_urls'
+import QuestionModalTextAnswer from './components/QuestionModalTextAnswer'
 
 export const createTestPageId: string = 'create-test'
 
@@ -75,7 +76,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 1,
-      content: <Modal2/>
+      content: <QuestionModalTextAnswer setTestList={setQuestionList}/>
     },
     {
       id: 2,

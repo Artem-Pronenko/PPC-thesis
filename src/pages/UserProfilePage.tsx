@@ -1,6 +1,6 @@
-import React, {ChangeEvent, useContext, useEffect, useState} from 'react'
+import React, {ChangeEvent, SyntheticEvent, useContext, useEffect, useState} from 'react'
 import {FirebaseContext} from 'index'
-import {noUserImg} from 'constant/icons'
+import {noUserImg, placeholderImage} from 'constant/icons'
 import {useDocument} from 'react-firebase-hooks/firestore'
 import {TGroups} from 'types/dbTypes'
 import useFirestoreSet from 'hooks/useFirestoreSet'
@@ -52,7 +52,11 @@ const UserProfilePage = () => {
     <section className="user-profile center-page">
       <div className="user-profile__head">
         <div className="user-profile__img">
-          <img src={user?.photoURL ?? noUserImg} alt="user"/>
+          <img
+            src={user?.photoURL ?? noUserImg}
+            alt="user"
+            onError={((e: SyntheticEvent<HTMLImageElement>) => (e.target as HTMLImageElement).src = placeholderImage)}
+          />
         </div>
         <strong className="user-profile__user-name">{user?.displayName}</strong>
       </div>

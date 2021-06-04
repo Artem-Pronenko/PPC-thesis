@@ -1,5 +1,6 @@
 import React, {FC} from 'react'
 import {ITestListItem} from 'types/testsTypes'
+import {questionType} from 'constant/common'
 
 interface TestPreviewListProps {
   testList: Array<ITestListItem>
@@ -16,6 +17,13 @@ const TestPreview: FC<TestPreviewListProps> = ({testList, deleteTest}) => {
           <span className="question-card__subtitle">Варианрты ответа</span>
           <hr className="question-card__hr"/>
           <ul className="question-card__answers">
+            {el.type === questionType.TEXT_ANSWER && (
+              <li
+                key={el.answer}
+                className="question-card__answers-item">
+                {el.answer} {el.answer && <span>&#10004;</span>}
+              </li>
+            )}
             {el.answerOptions.map(item => (
               <li
                 key={item.id}
