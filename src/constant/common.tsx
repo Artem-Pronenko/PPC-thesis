@@ -1,5 +1,7 @@
 import {IModalTextAnswerValues, IModalOneAnswerValues} from 'types/questionsModalTypes'
-import {userProfilePageId} from 'pages/UserProfilePage'
+import {INavbarList} from 'types/common'
+import {HistorySvg, HomeSvg, PersonSvg, StudySvg} from './icons'
+import React from 'react'
 
 export const INPUT_ANSWER = 'INPUT_ANSWER'
 export const INPUT_QUESTION = 'INPUT_QUESTION'
@@ -30,14 +32,26 @@ export const minutesDeclOfNum = ['минута', 'минуты', 'минут']
 
 export type IInitialSortList = Array<{ text: string, active: boolean, id: string }>
 
-export const dropList = [
+export const navList: INavbarList[] = [
   {
-    text: 'Мой профиль',
-    path: `/${userProfilePageId}`,
+    path: '/',
+    icon: <HomeSvg/>,
+    text: 'Домой'
   },
   {
-    text: 'Что-то еще',
-    path: '/',
+    path: '/study',
+    icon: <StudySvg/>,
+    text: 'Создать тест'
+  },
+  {
+    path: '/profile',
+    icon: <PersonSvg/>,
+    text: 'Мой профиль'
+  },
+  {
+    path: '/history',
+    icon: <HistorySvg/>,
+    text: 'История'
   },
 ]
 export const sortAllTests: string = 'allTests'

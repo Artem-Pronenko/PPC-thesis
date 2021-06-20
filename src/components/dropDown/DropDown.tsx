@@ -1,13 +1,13 @@
 import React, {FC} from 'react'
 import {NavLink} from 'react-router-dom'
 import style from './drop_down.module.scss'
+import {signOutUser} from 'api'
 
 interface DropDownProps {
   dropList: {
     text: string
     path: string
   }[]
-
 }
 
 const DropDown: FC<DropDownProps> = ({children, dropList}) => {
@@ -22,6 +22,14 @@ const DropDown: FC<DropDownProps> = ({children, dropList}) => {
                 <NavLink to={item.path} children={item.text} className={style.dropLink}/>
               </li>
             ))}
+            <li className={style.dropItem}>
+              <NavLink
+                to={'/'}
+                children={'Выйти'}
+                className={style.dropLink}
+                onClick={() => signOutUser().then()}
+              />
+            </li>
           </ul>
         </li>
       </ul>

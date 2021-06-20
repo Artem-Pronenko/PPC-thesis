@@ -9,8 +9,12 @@ import {dayDeclOfNum, hourDeclOfNum, minutesDeclOfNum, monthDeclOfNum, yerDeclOf
 export interface TestListProps {
   testList: ITest[]
   completeTestIds: Array<string>
+  buttonTest?: string
+  isBlocked?: boolean
+  link?: string
 }
-const calcDate = (startDate: number, endDate: number): {available: boolean, string: string} => {
+
+const calcDate = (startDate: number, endDate: number): { available: boolean, string: string } => {
   if ((endDate - startDate) <= 0) return {
     available: false,
     string: 'Не осталось :)'
@@ -27,9 +31,15 @@ const calcDate = (startDate: number, endDate: number): {available: boolean, stri
   }
 }
 
-export const isActive = (item:  ITest) => !item.isActiveOnExpiration && !calcDate(Date.now(), Date.parse(item.testEndDate)).available
+export const isActive = (item: ITest) => !item.isActiveOnExpiration && !calcDate(Date.now(), Date.parse(item.testEndDate)).available
 
-const TestList: FC<TestListProps> = ({testList, completeTestIds}) => {
+const TestList: FC<TestListProps> = ({
+                                       testList,
+                                       completeTestIds,
+                                       buttonTest = 'Пройти',
+                                       isBlocked = true,
+                                       link = studyPageId
+                                     }) => {
   const [completeId, setCompleteId] = useState<Array<string>>([])
 
   useEffect(() => {
@@ -53,13 +63,13 @@ const TestList: FC<TestListProps> = ({testList, completeTestIds}) => {
             className="test-text__end-time">Осталось: {calcDate(Date.now(), Date.parse(item.testEndDate)).string}</span>
           <NavLink
             onClick={(e) => {
-              if (isActive(item)) {
+              if (isActive(item) && isBlocked) {
                 e.preventDefault()
               }
             }}
-            to={`/${studyPageId}/${item.type}/${item.idDoc}`}
-            className={`test-item__button button ${isActive(item) ? 'disabled' : ''}`}>
-            Пройти
+            to={`/${link}/${item.type}/${item.idDoc}`}
+            className={`test-item__button button ${isActive(item) && isBlocked ? 'disabled' : ''}`}>
+            {buttonTest}
           </NavLink>
         </li>
       ))}

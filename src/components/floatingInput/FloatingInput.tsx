@@ -1,4 +1,4 @@
-import React, {ChangeEventHandler, FC} from 'react'
+import React, {ChangeEventHandler, CSSProperties, FC} from 'react'
 import style from './floating_input.module.scss'
 
 interface FloatingInputProps {
@@ -11,6 +11,7 @@ interface FloatingInputProps {
   value?: string
   dataQuestion?: string
   isDisabled?: boolean
+  labelStyle?: CSSProperties
 }
 
 const FloatingInput: FC<FloatingInputProps> = ({
@@ -22,7 +23,9 @@ const FloatingInput: FC<FloatingInputProps> = ({
                                                  inputDataSetId = '',
                                                  value,
                                                  dataQuestion,
-                                                 isDisabled = false
+                                                 isDisabled = false,
+                                                 labelStyle
+
                                                }) => {
   return (
     <div className={style.form__group}>
@@ -40,7 +43,7 @@ const FloatingInput: FC<FloatingInputProps> = ({
         data-question={dataQuestion}
         disabled={isDisabled}
       />
-      <label htmlFor={id} className={style.form__label}>{name}</label>
+      <label style={labelStyle} htmlFor={id} className={style.form__label}>{name}</label>
     </div>
   )
 }

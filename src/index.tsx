@@ -10,27 +10,8 @@ import firebase from 'firebase/app'
 import {FirebaseContextProps} from 'types/dbTypes'
 import 'firebase/firestore'
 import Loader from 'components/loader/Loader'
-import {HomeSvg, PersonSvg, StudySvg, HistorySvg} from 'constant/icons'
 import {authPageId} from 'pages/AuthPage'
-
-const navList = [
-  {
-    path: '/',
-    icon: <HomeSvg/>,
-  },
-  {
-    path: '/study',
-    icon: <StudySvg/>,
-  },
-  {
-    path: '/profile',
-    icon: <PersonSvg/>,
-  },
-  {
-    path: '/history',
-    icon: <HistorySvg/>,
-  },
-]
+import {navList} from 'constant/common'
 
 const auth = firebase.auth()
 const db = firebase.firestore()
@@ -52,7 +33,7 @@ const App: FC = () => {
   return (
     <FirebaseContext.Provider value={{firebase, auth, user, db}}>
       <div className="app">
-        <Navbar navigationList={navList}/>
+        <Navbar navList={navList}/>
         <div className="main-content">
           <Routes/>
         </div>

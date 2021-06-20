@@ -9,20 +9,19 @@ import {APIUrls} from 'constant/api_urls'
 import {APITestField, noGroup} from 'constant/api_constants'
 import {
   onlyActive,
-  dropList,
   IInitialSortList,
   initialSortList,
   myGroup,
   sortAllTests,
-  sortByName
+  sortByName, navList
 } from 'constant/common'
 import {FirebaseContextProps, IUserInitialData, IUserSendTest} from 'types/dbTypes'
 import {IGetTestList, ITest} from 'types/testsTypes'
-import {testListItemModel} from 'models/tests'
+import {testListItemModel, usersTestCompleteModel} from 'models/tests'
 import {getUserInfo} from 'api'
 import {FirebaseContext} from 'index'
 import SearchInput from 'components/SearchInput'
-import Banners from './components/Banners';
+import Banners from './components/Banners'
 
 const HomePage = () => {
   const {user, db} = useContext<FirebaseContextProps>(FirebaseContext)
@@ -55,7 +54,7 @@ const HomePage = () => {
       case sortByName:
         setUserTestSnapshot(testList.filter(e => {
           const reg = new RegExp(searchValue, 'gi')
-          if (e.testName.match(reg) || e.testDescription.match(reg)) return e
+          return e.testName.match(reg) || e.testDescription.match(reg) ? e : false
         }))
         break
       default:
@@ -82,10 +81,7 @@ const HomePage = () => {
     if (+_testsLeft <= 0) _testsLeft = '0'
     setTestsLeft(_testsLeft)
     if (!userTestComplete) return
-    setUserTestComplete({
-      completeTest: userTestComplete.completeTest,
-      completeTestId: userTestComplete.completeTestId
-    })
+    setUserTestComplete(usersTestCompleteModel(userTestComplete))
   }, [userTestCompleteSnapshot, userTestSnapshot])
 
   useEffect(() => {
@@ -172,7 +168,7 @@ const HomePage = () => {
               <SearchInput onChange={onSearchTest}/>
             </li>
             <li className="user-button">
-              <DropDown dropList={dropList}>
+              <DropDown dropList={navList}>
                 <div className="user-button__avatar">
                   <img
                     src={user.photoURL ?? noUserImg}

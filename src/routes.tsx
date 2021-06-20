@@ -8,6 +8,7 @@ import HistoryPage, {historyPageId} from 'pages/HistoryPage'
 import CreateTestPage, {createTestPageId} from 'pages/createTestPage/CreateTestPage'
 import MultiTestPage, {multiTestPageId} from 'pages/takingTestPages/MultiTestPage'
 import HistoryViewPage from 'pages/HistoryViewPage'
+import MyTestPage, {myTestPageId} from './pages/myTestPage/MyTestPage'
 
 export const Routes = () => {
   return (
@@ -20,6 +21,7 @@ export const Routes = () => {
       <Route path={`/${historyPageId}`} component={HistoryPage} exact/>
       <Route path={`/${historyPageId}/:slug`} component={HistoryViewPage}/>
       <Route path={`/${createTestPageId}/:slug`} component={CreateTestPage}/>
+      <Route path={`/${myTestPageId}/:slug/:slug`} component={MyTestPage}/>
     </Switch>
   )
 }

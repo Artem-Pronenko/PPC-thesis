@@ -48,7 +48,8 @@ export const onSendTest = async ({responseTestId, urlTest, urlTestComplete, answ
 
   const body = {
     completeTestId: firebase.firestore.FieldValue.arrayUnion(responseTestId),
-    completeTest: firebase.firestore.FieldValue.arrayUnion(completeTest)
+    completeTest: firebase.firestore.FieldValue.arrayUnion(completeTest),
+    timeComplete: firebase.firestore.FieldValue.arrayUnion({testId: responseTestId, completeTest: Date.now()})
   }
 
   try {

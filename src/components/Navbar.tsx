@@ -1,17 +1,16 @@
-import React, {FC, ReactElement, useContext} from 'react'
+import React, {FC, ReactElement} from 'react'
 import {NavLink} from 'react-router-dom'
 import {LogoSvg, LogoutSvg} from 'constant/icons'
-import {FirebaseContext} from 'index'
+import {signOutUser} from 'api'
 
 interface NavbarProps {
-  navigationList: {
+  navList: {
     path: string,
     icon: ReactElement<SVGSVGElement>,
   }[]
 }
 
-const Navbar: FC<NavbarProps> = ({navigationList}) => {
-  const {auth} = useContext(FirebaseContext)
+const Navbar: FC<NavbarProps> = ({navList}) => {
 
   return (
     <div className="navbar">
@@ -20,7 +19,7 @@ const Navbar: FC<NavbarProps> = ({navigationList}) => {
       </NavLink>
       <nav className="navbar-wrapper">
         <ul className="navbar-list">
-          {navigationList.map(item => (
+          {navList.map(item => (
             <li key={item.path}>
               <NavLink to={item.path} className="nav-link" exact>
                 {item.icon}
@@ -29,7 +28,7 @@ const Navbar: FC<NavbarProps> = ({navigationList}) => {
           ))}
         </ul>
       </nav>
-      <button onClick={() => auth.signOut()}>
+      <button className="navbar__button" onClick={() => signOutUser()}>
         <LogoutSvg/>
       </button>
     </div>

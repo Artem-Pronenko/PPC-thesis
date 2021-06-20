@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import {IUserAnswer} from './dbTypes'
 
 export interface IGetTestList {
   sort?: string,
@@ -45,4 +46,12 @@ interface ITestAnswer {
 export interface ITestListAnswer {
   idDoc: string
   answers: ITestAnswer[]
+}
+
+export interface ITestView {
+  idDoc: string
+  testName: string
+  currentTest: ITest
+  userAnswers: IUserAnswer[]
+  correctAnswers: ITestListAnswer
 }

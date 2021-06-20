@@ -18,9 +18,16 @@ export interface IUserCompleteTest {
   answers: Array<IUserAnswer>
 }
 
+export interface ITimeComplete {
+  testId: string
+  completeTest: Date
+}
+
 export interface IUserSendTest {
   completeTestId: Array<string>
   completeTest: IUserCompleteTest[]
+  idDoc?: string
+  timeComplete: ITimeComplete[]
 }
 
 export interface IUserInitialData {
