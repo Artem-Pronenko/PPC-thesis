@@ -37,6 +37,7 @@ const MyTestPage: FC<RouteProps> = ({match}) => {
     const correctTestIdArr: string[] = []
     for (let i = 0; i < correctAnswers.length; i++) {
       for (let k = 0; k < currentTestsAnswers.length; k++) {
+        console.log(currentTestsAnswers[k].answerId )
         if (currentTestsAnswers[k].answerId === correctAnswers[i].correctAnswer) {
           correctTestIdArr.push(currentTestsAnswers[k].answerId)
         }
@@ -112,12 +113,14 @@ const MyTestPage: FC<RouteProps> = ({match}) => {
   }, [testAnswerSnapshot, currentTestSnapshot])
 
 
+  useEffect(() => {
+  }, [viewTest, correctTestId])
   if (userCompleteTest.length === 0) {
-    return <h3>Еще никто не прошел ваш тест :(</h3>
+    return <h3>Nobody has passed your test yet:(</h3>
   }
   return (
     <section>
-      <h3>Общая статистика</h3>
+      <h3>Total stats</h3>
       <Table
         userCompleteTest={userCompleteTest}
         getCorrectAnswerLength={getCorrectAnswerLength}
@@ -125,7 +128,7 @@ const MyTestPage: FC<RouteProps> = ({match}) => {
         testName={currentTest?.testName || ''}
         userTestCompleteData={userTestCompleteData}
       />
-      <h3>Прошли тест</h3>
+      <h3>Passed the test</h3>
       <Modal active={isViewTest} setActive={setIsViewTest}>
         {viewTest && (
           <TestForm
@@ -152,7 +155,7 @@ const MyTestPage: FC<RouteProps> = ({match}) => {
           <button onClick={() => {
             getCorrectAnswers(e.idDoc)
             setIsViewTest(true)
-          }}>Ответы
+          }}>Answers
           </button>
         </div>
       ))}

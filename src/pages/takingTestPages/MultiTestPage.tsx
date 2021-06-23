@@ -127,14 +127,14 @@ const MultiTestPage: FC<RouteProps> = ({match}) => {
           {isSendTest
             ? (
               <div className="taking-page__complete-block">
-                <NavLink className="button" to={`/${historyPageId}/${slug}`}>Посмотреть историю</NavLink>
-                <strong className="taking-page__complete-text">Тест успешно сдан!</strong>
+                <NavLink className="button" to={`/${historyPageId}/${slug}`}>View history</NavLink>
+                <strong className="taking-page__complete-text">The test has been successfully passed!</strong>
               </div>
             )
             : <button
               onClick={handleSubmit}
               className={(isSendTest || isActive(responseTest)) ? 'disabled' : ''}>
-              Отправить
+              Send
             </button>
           }
         </div>

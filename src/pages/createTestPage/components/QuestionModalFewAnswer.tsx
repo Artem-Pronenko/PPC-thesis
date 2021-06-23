@@ -6,12 +6,12 @@ import {INPUT_ANSWER, modalOneAnswerInitialValues, questionType} from 'constant/
 import {ITestListItem} from 'types/testsTypes'
 import {uid} from 'uid'
 
-interface QuestionModalOneAnswerProps {
+interface QuestionModalFewAnswerProps {
   setTestList: Dispatch<SetStateAction<ITestListItem[]>>
   maxAnswer: number
 }
 
-const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, maxAnswer}) => {
+const QuestionModalFewAnswer: FC<QuestionModalFewAnswerProps> = ({setTestList, maxAnswer}) => {
   const [inputGroup, setInputGroup] = useState<Array<JSX.Element>>([])
   const [question, setQuestion] = useState<string>('')
   const formRef = useRef<HTMLFormElement>(null)
@@ -30,7 +30,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
     setInputGroup(prevState => {
       return [...prevState, CreateField({
         inputId,
-        radioButtonDoneName: modalOneAnswerInitialValues.radioButtonDoneValue,
+        radioButtonDoneName: uid(),
         radioButtonDoneId: radioButtonValue,
         deleteField,
       })]
@@ -48,16 +48,16 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
 
     const testData: ITestListItem = {
       id: uid(),
-      type: questionType.ONE_ANSWER,
+      type: questionType.FEW_ANSWER,
       question,
-      answer: '',
+      answers: [],
       answerOptions: [],
     }
 
     formElements.forEach(item => {
       if (!(item instanceof HTMLInputElement)) return
 
-      if (item.checked) testData.answer = item.value
+      if (item.checked) testData.answers!.push(item.value)
 
       if (item.dataset.typeInput === INPUT_ANSWER) {
         testData.answerOptions.push({
@@ -75,7 +75,7 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
 
   return (
     <div className="create-question-modal">
-      <h3 className="create-question-modal__title">One answer question</h3>
+      <h3 className="create-question-modal__title">{modalOneAnswerInitialValues.questionInputName}</h3>
       <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
         <FloatingInput
           name={'Your question'}
@@ -89,9 +89,9 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
           {inputGroup}
         </div>
         {maxAnswer > inputGroup.length && <button onClick={(e: FormEvent) => {
-            e.preventDefault()
-            createFieldHandler()
-          }}>new field</button>}
+          e.preventDefault()
+          createFieldHandler()
+        }}>new field</button>}
 
 
         <hr className="form-create-question__hr"/>
@@ -104,4 +104,4 @@ const QuestionModalOneAnswer: FC<QuestionModalOneAnswerProps> = ({setTestList, m
   )
 }
 
-export default QuestionModalOneAnswer
+export default QuestionModalFewAnswer

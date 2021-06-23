@@ -14,7 +14,7 @@ const TestPreview: FC<TestPreviewListProps> = ({testList, deleteTest}) => {
         <div key={el.id} className="question-card test-card question-card__mb">
           <button className="question-card__delete delete" onClick={() => deleteTest(el.id)}>&#10007;</button>
           <h3 className="question-card__title">{el.question}</h3>
-          <span className="question-card__subtitle">Варианрты ответа</span>
+          <span className="question-card__subtitle">Answer options</span>
           <hr className="question-card__hr"/>
           <ul className="question-card__answers">
             {el.type === questionType.TEXT_ANSWER && (
@@ -28,7 +28,8 @@ const TestPreview: FC<TestPreviewListProps> = ({testList, deleteTest}) => {
               <li
                 key={item.id}
                 className="question-card__answers-item"
-              >{item.answerText} {item.id === el.answer && <span>&#10004;</span>}
+              >
+                {item.answerText} {el.answers?.includes(item.id) && <span>&#10004;</span>}{item.id === el.answer && <span>&#10004;</span>}
               </li>
             ))}
           </ul>

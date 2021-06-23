@@ -12,7 +12,7 @@ const SelectInput: FC<SelectInputProps> = ({
                                              onChange,
                                              selectItem,
                                              items,
-                                             label = 'Выбрать группу:',
+                                             label = 'Select a group:',
                                              isFullWidth
                                            }) => {
   return (

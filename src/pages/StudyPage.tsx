@@ -5,18 +5,13 @@ import yesOrNoSVG from '../assets/icons/yes_or_no.svg'
 const testList = [
   {
     testIcon: yesOrNoSVG,
-    testTitle: 'Тест с двумя вариантами ответа',
+    testTitle: 'Two-choice test',
     testType: 'yesOrNo',
   },
   {
     testIcon: yesOrNoSVG,
-    testTitle: 'Мульти тест (включает в себя любые вопросы)',
+    testTitle: 'Multi test (includes any questions)',
     testType: 'multi'
-  },
-  {
-    testIcon: yesOrNoSVG,
-    testTitle: 'Тест с Мульти тест (включает в себя любые вопросы) Мульти тест (включает в себя любые вопросы) Мульти тест (включает в себя любые вопросы)',
-    testType: 'bad',
   },
 ]
 

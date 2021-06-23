@@ -20,12 +20,18 @@ enum CorrectAnswer {
   notAnswer
 }
 
+enum InputType {
+  radio = 'radio',
+  checkbox = 'checkbox',
+}
+
 interface InputProps {
   answerOption: IAnswerOptions
   isSendTest: boolean
   isChecked: (currentAnswerId: string, currentQuestionId: string) => boolean,
   question: ITestListItem
   isCorrectAnswer?: CorrectAnswer
+  type?: InputType
 }
 
 const Input: FC<InputProps> = ({
@@ -33,7 +39,8 @@ const Input: FC<InputProps> = ({
                                  isSendTest,
                                  isChecked,
                                  question,
-                                 isCorrectAnswer = CorrectAnswer.notAnswer
+                                 isCorrectAnswer = CorrectAnswer.notAnswer,
+                                 type = InputType.radio
                                }) => {
   const getStyle = () => {
     if (isChecked(answerOption.id, question.id)) {
@@ -52,7 +59,7 @@ const Input: FC<InputProps> = ({
     <label style={getStyle()}>
       <input
         className="taking-form__input"
-        type="radio"
+        type={type}
         value={answerOption.id}
         disabled={isSendTest}
         defaultChecked={isChecked(answerOption.id, question.id)}
@@ -80,6 +87,7 @@ const TestForm: FC<TestFormProps> =
      correctTestId,
    }) => {
     const getInputName = (question: ITestListItem): string => userAnswers?.filter(e => e.questionId === question.id)[0]?.answerId || 'Ответ'
+    const getStyles = (question: ITestListItem) => correctTestId ? correctTestId.includes(getInputName(question)) ? {color: 'green'} : {color: 'red'} : {}
 
     return (
       <form className="taking-form" ref={formRef}>
@@ -88,7 +96,7 @@ const TestForm: FC<TestFormProps> =
             <h3>{question.question}</h3>
             {question.type === questionType.TEXT_ANSWER &&
             <FloatingInput
-              labelStyle={correctTestId?.includes(getInputName(question)) ? {color: 'green'} : {color: 'red'}}
+              labelStyle={getStyles(question)}
               name={getInputName(question)}
               placeholder={getInputName(question)}
               id={uid()}
@@ -99,7 +107,28 @@ const TestForm: FC<TestFormProps> =
               isDisabled={!!userAnswers}
             />}
             <ul>
-              {question.answerOptions.map(answerOption => (
+              {question.type === questionType.FEW_ANSWER && question.answerOptions.map(answerOption => (
+                <li key={answerOption.id}>
+                  {correctTestId && correctTestId.length
+                    ? <Input
+                      isSendTest={isSendTest}
+                      isChecked={isChecked}
+                      answerOption={answerOption}
+                      question={question}
+                      isCorrectAnswer={correctTestId.includes(answerOption.id) ? CorrectAnswer.correct : CorrectAnswer.unCorrect}
+                    />
+                    : <Input
+                      isSendTest={isSendTest}
+                      isChecked={isChecked}
+                      answerOption={answerOption}
+                      question={question}
+                      type={InputType.checkbox}
+                    />
+                  }
+                </li>
+              ))}
+              {(question.type === questionType.ONE_ANSWER || question.type === questionType.YES_OR_NO_ANSWER)
+              && question.answerOptions.map(answerOption => (
                 <li key={answerOption.id}>
                   {correctTestId && correctTestId.length
                     ? <Input

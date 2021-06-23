@@ -2,7 +2,6 @@ import React, {FC, useContext, useState} from 'react'
 import Modal from 'components/Modal'
 import {RouteProps} from 'types/routeTypes'
 import {ITest, ITestListAnswer, ITestListItem} from 'types/testsTypes'
-import {Modal3} from 'components/QuestionModalContent'
 import QuestionModalOneAnswer from './components/QuestionModalOneAnswer'
 import QuestionModalYesOrNo from './components/QuestionModalYesOrNo'
 import Loader from 'components/loader/Loader'
@@ -16,6 +15,7 @@ import SettingsModal from './components/SettingsModal'
 import {FirebaseContext} from 'index'
 import {APIUrls} from 'constant/api_urls'
 import QuestionModalTextAnswer from './components/QuestionModalTextAnswer'
+import QuestionModalFewAnswer from './components/QuestionModalFewAnswer';
 
 export const createTestPageId: string = 'create-test'
 
@@ -51,7 +51,8 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     questionList.forEach(question => {
       initialDataAnswer.answers.push({
         question: question.id,
-        correctAnswer: question.answer!
+        correctAnswer: question?.answer || 'notOneAnswer',
+        correctAnswers: question.answers || []
       })
       initialDataTest.questions.push({
         type: question.type,
@@ -80,7 +81,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
     },
     {
       id: 2,
-      content: <Modal3/>,
+      content: <QuestionModalFewAnswer maxAnswer={30} setTestList={setQuestionList}/>,
     },
     {
       id: 3,
@@ -117,13 +118,13 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
 
   if (slug === 'multi') return (
     <div>
-      <h3>Создание {slug} теста</h3>
+      <h3>Creating a {slug} test</h3>
       <div className="create-test-page flew-wrapper">
         <Modal active={activeModal} setActive={setActiveModal}>
           {modalContent.filter(e => e.id === modalContentId)[0]?.content}
         </Modal>
         <div className="left-content">
-          {!questionList.length && <h4>Начните создавать тест</h4>}
+          {!questionList.length && <h4>Start building your test</h4>}
           {questionList.length > 0 && (
             <TestPreview
               testList={questionList}
@@ -134,16 +135,10 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
           {error && <strong className="error">{ERROR_CREATE_TEST}: {error?.message}</strong>}
         </div>
         <div className="right-content create-test-bar">
-          <button onClick={() => showModal(0)} className="rainbow create-test__button">Вопрос с 1 правильным
-            ответом
-          </button>
-          <button onClick={() => showModal(1)} className="rainbow create-test__button">Вопрос с текстовым
-            ответом
-          </button>
-          <button onClick={() => showModal(2)} className="rainbow create-test__button">Вопрос с несколькими
-            ответами
-          </button>
-          <button onClick={() => showModal(3)} className="rainbow create-test__button">Вопрос да/нет</button>
+          <button onClick={() => showModal(0)} className="rainbow create-test__button">Question with 1 correct answer</button>
+          <button onClick={() => showModal(1)} className="rainbow create-test__button">Question with text answer</button>
+          <button onClick={() => showModal(2)} className="rainbow create-test__button">Multiple answer question</button>
+          <button onClick={() => showModal(3)} className="rainbow create-test__button">Yes / no question</button>
         </div>
       </div>
       <FloatingButton
@@ -155,7 +150,7 @@ const CreateTestPage: FC<RouteProps> = ({match}) => {
 
   return (
     <div>
-      <h4>В разработке. Выберете другой тест</h4>
+      <h4>In developing. Choose another test</h4>
     </div>
   )
 }

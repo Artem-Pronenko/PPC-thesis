@@ -23,6 +23,7 @@ export interface ITestListItem {
   type: string
   answerOptions: Array<IAnswerOptions>
   answer?: string
+  answers?: Array<string>
 }
 
 export interface ITest {
@@ -41,6 +42,7 @@ export interface ITest {
 interface ITestAnswer {
   question: string
   correctAnswer: string
+  correctAnswers?: Array<string>
 }
 
 export interface ITestListAnswer {

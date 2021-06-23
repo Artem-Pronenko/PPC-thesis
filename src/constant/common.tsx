@@ -6,22 +6,23 @@ import React from 'react'
 export const INPUT_ANSWER = 'INPUT_ANSWER'
 export const INPUT_QUESTION = 'INPUT_QUESTION'
 
-export const ERROR_CREATE_TEST = 'Ошибка при создании теста'
+export const ERROR_CREATE_TEST = 'Error while creating a test'
 
 export const questionType = {
   ONE_ANSWER: 'ONE_ANSWER',
   YES_OR_NO_ANSWER: 'YES_OR_NO_ANSWER',
-  TEXT_ANSWER: 'TEXT_ANSWER'
+  TEXT_ANSWER: 'TEXT_ANSWER',
+  FEW_ANSWER: 'FEW_ANSWER'
 }
 
 export const modalOneAnswerInitialValues: IModalOneAnswerValues = {
-  questionInputName: 'Вопрос с несколькими ответами',
-  inputVariantName: 'Ответ',
+  questionInputName: 'Multiple answer question',
+  inputVariantName: 'Answer',
   radioButtonDoneValue: 'done',
 }
 
 export const modalTestAnswerInitialValues: IModalTextAnswerValues = {
-  questionInputName: 'Вопрос с текстовым ответом',
+  questionInputName: 'Question with text answer',
 }
 
 export const yerDeclOfNum = ['год', 'года', 'лет']
@@ -36,22 +37,22 @@ export const navList: INavbarList[] = [
   {
     path: '/',
     icon: <HomeSvg/>,
-    text: 'Домой'
+    text: 'Home'
   },
   {
     path: '/study',
     icon: <StudySvg/>,
-    text: 'Создать тест'
+    text: 'Create test'
   },
   {
     path: '/profile',
     icon: <PersonSvg/>,
-    text: 'Мой профиль'
+    text: 'Profile'
   },
   {
     path: '/history',
     icon: <HistorySvg/>,
-    text: 'История'
+    text: 'History'
   },
 ]
 export const sortAllTests: string = 'allTests'
@@ -61,17 +62,17 @@ export const sortByName: string = 'sortByName'
 
 export const initialSortList: IInitialSortList = [
   {
-    text: 'Все тесты',
+    text: 'All tests',
     active: true,
     id: sortAllTests
   },
   {
-    text: 'Моя группа',
+    text: 'My group',
     active: false,
     id: myGroup
   },
   {
-    text: 'Еще можно сдать',
+    text: 'You can still pass',
     active: false,
     id: onlyActive
   }

@@ -78,18 +78,18 @@ const UserProfilePage = () => {
         <strong className="user-profile__user-name">{user?.displayName}</strong>
       </div>
       <hr/>
-      <h3>Мои тесты</h3>
+      <h3>My tests</h3>
       {testListLoading && <Loader isMini={true}/>}
-      {!testListLoading && userTestSnapshot.length === 0 && <span>У вас нет активных тестов</span>}
+      {!testListLoading && userTestSnapshot.length === 0 && <span>You have no active tests</span>}
       <TestList
         testList={userTestSnapshot}
         completeTestIds={[]}
-        buttonTest={'Проверить'}
+        buttonTest={'Check on'}
         isBlocked={false}
         link={myTestPageId}
       />
       <hr/>
-      <h3>Настройки</h3>
+      <h3>Settings</h3>
       {loadingGroups ?
         <Loader isMini={true}/>
         : (
@@ -104,7 +104,7 @@ const UserProfilePage = () => {
             />
           </div>
         )}
-      {isEditProfile && <button onClick={onSaveChange} type="submit">Сохранить</button>}
+      {isEditProfile && <button onClick={onSaveChange} type="submit">Save</button>}
     </section>
   )
 }

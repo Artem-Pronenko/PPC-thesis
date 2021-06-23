@@ -67,11 +67,11 @@ const SettingsModal: FC<SettingsModalProps> = ({
 
   return (
     <div>
-      <h3>Настройки теста</h3>
+      <h3>Test settings</h3>
       <br/>
       <FloatingInput
-        name={'Имя теста'}
-        placeholder={'Дайте имя тесту'}
+        name={'Test name'}
+        placeholder={'Give a test name'}
         id={uid()}
         onChange={e => setTestName(e.target.value)}
         value={testName}
@@ -79,8 +79,8 @@ const SettingsModal: FC<SettingsModalProps> = ({
       <br/>
       <br/>
       <FloatingInput
-        name={'Описание теста'}
-        placeholder={'Дайте описание теста'}
+        name={'Test description'}
+        placeholder={'Give a description of the test'}
         id={uid()}
         onChange={e => setTestDescription(e.target.value)}
         value={testDescription}
@@ -90,7 +90,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
       <label className="create-test__date-label">
         <span>
           <span className="create-test__date-icon">&#9760;</span>
-        Пройти тест нужно до:
+        You need to take the test before:
         </span>
         <input
           type="datetime-local"
@@ -107,7 +107,7 @@ const SettingsModal: FC<SettingsModalProps> = ({
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           setIsActiveOnExpiration(e.target.value === 'Да')
         }}
-        label={'Разрешить прохождение после указаной даты?'}
+        label={'Allow passage after the specified date?'}
       />
       <br/>
       <SelectInput
@@ -117,12 +117,12 @@ const SettingsModal: FC<SettingsModalProps> = ({
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           setChoseGroups(e.target.value)
         }}
-        label={'Тест для группы:'}
+        label={'Test for group:'}
       />
       <br/>
       {isShowButton
-        ? <button onClick={handleCreateTest}>Создать!</button>
-        : <strong>Чтобы создать тест, добавьте не менее 1 вопроса</strong>}
+        ? <button onClick={handleCreateTest}>Create!</button>
+        : <strong>Add at least 1 question to create a test</strong>}
     </div>
   )
 }

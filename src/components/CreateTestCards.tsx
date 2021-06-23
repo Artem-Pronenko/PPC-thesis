@@ -23,7 +23,7 @@ const CreateTestCards: FC<CreateTestCardsProps> = ({testList}) => {
             </p>
           </div>
           <NavLink className="test-card__button rainbow" to={`/create-test/${item.testType}`}>
-            Создать тест
+            Create test
           </NavLink>
         </div>
       ))}

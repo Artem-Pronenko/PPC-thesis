@@ -48,36 +48,36 @@ const QuestionModalYesOrNo: FC<QuestionModalYesOrNoProps> = ({setTestList}) => {
 
   return (
     <div className="create-question-modal">
-      <h3 className="create-question-modal__title">Вопрос да/нет</h3>
+      <h3 className="create-question-modal__title">Yes / no question</h3>
       <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
         <FloatingInput
-          name={'Ваш вопрос'}
-          placeholder={'Вопрос'}
+          name={'Your question'}
+          placeholder={'Question'}
           id={uid()}
           onChange={e => setQuestion(e.target.value)}
           value={question}
         />
-        <span className="create-question-modal__subtitle">Варианты ответа:</span>
+        <span className="create-question-modal__subtitle">Answer options:</span>
         <div className="form-create-question__variants">
           <RadioButton
             id={'radio-yes'}
-            value={'Да'}
-            text={'Да'}
+            value={'Yes'}
+            text={'Yes'}
             name={'1'}
             datasetId={uid()}
             datasetType={INPUT_ANSWER}
           />
           <RadioButton
             id={'radio-no'}
-            value={'Нет'}
-            text={'Нет'}
+            value={'No'}
+            text={'No'}
             name={'1'}
             datasetId={uid()}
             datasetType={INPUT_ANSWER}
           />
         </div>
         <hr className="form-create-question__hr"/>
-        <ButtonWave text={'Создать!'} onClick={submitHandler}/>
+        <ButtonWave text={'Create!'} onClick={submitHandler}/>
       </form>
     </div>
   )

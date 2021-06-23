@@ -40,20 +40,20 @@ const QuestionModalTextAnswer: FC<QuestionModalTestAnswerProps> = ({setTestList}
 
   return (
     <div className="create-question-modal">
-      <h3 className="create-question-modal__title">{modalOneAnswerInitialValues.questionInputName}</h3>
+      <h3 className="create-question-modal__title">Question with text answer</h3>
       <form className="form form-create-question" onSubmit={submitHandler} ref={formRef}>
         <FloatingInput
-          name={'Ваш вопрос'}
+          name={'Your question'}
           value={question}
-          placeholder={'Вопрос'}
+          placeholder={'Question'}
           id={uid()}
           onChange={e => setQuestion(e.target.value)}
         />
         <div className="form-create-question__variants">
           <FloatingInput
-            name={'Правильный ответ'}
+            name={'Correct answer'}
             value={answer}
-            placeholder={'Ответ'}
+            placeholder={'Answer'}
             id={uid()}
             onChange={e => setAnswer(e.target.value)}
             inputDataSet={INPUT_ANSWER}
@@ -61,7 +61,7 @@ const QuestionModalTextAnswer: FC<QuestionModalTestAnswerProps> = ({setTestList}
         </div>
         <hr className="form-create-question__hr"/>
         <ButtonWave
-          text={'Создать!'}
+          text={'Create!'}
           onClick={submitHandler}
         />
       </form>

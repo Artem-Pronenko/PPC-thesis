@@ -144,8 +144,8 @@ const HomePage = () => {
       <div className="left-content">
         <div className="banner home__banner">
           <div className="banner__text">
-            <h2 className="banner__title">Привет {user.displayName}</h2>
-            <span className="banner-subtitle">Удачного прохождения тестов!)</span>
+            <h2 className="banner__title">Hi {user.displayName}</h2>
+            <span className="banner-subtitle">Happy passing tests!)</span>
           </div>
           <div className="banner__image">
             <BoySvg/>
@@ -153,11 +153,11 @@ const HomePage = () => {
         </div>
         <div className="test-banner">
           <div className="test-banner__sort">
-            <h3>Список тестов</h3>
+            <h3>Test list</h3>
             <TestToggler sortList={sortList} onSort={onSort}/>
           </div>
           {testListLoading && <Loader isMini={true}/>}
-          {!testListLoading && !userTestSnapshot.length && <strong>Активных тестов нет!)</strong>}
+          {!testListLoading && !userTestSnapshot.length && <strong>No active tests!)</strong>}
           <TestList testList={userTestSnapshot} completeTestIds={userTestComplete?.completeTestId ?? []}/>
         </div>
       </div>
@@ -182,8 +182,8 @@ const HomePage = () => {
           </ul>
         </nav>
         <div className="banners">
-          <Banners test={`${userTestComplete?.completeTest?.length || '0'}`} label={'Тестов пройдено'}/>
-          <Banners test={testsLeft} label={'Тестов осталось'}/>
+          <Banners test={`${userTestComplete?.completeTest?.length || '0'}`} label={'Tests passed'}/>
+          <Banners test={testsLeft} label={'Tests left'}/>
         </div>
       </div>
     </div>

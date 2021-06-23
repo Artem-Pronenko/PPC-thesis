@@ -36,11 +36,11 @@ const HistoryPage = () => {
     <div className="history-page">
       {errorLoadingTest && <strong>{errorLoadingTest.message}</strong>}
       {loadingTests && <Loader isMini={true}/>}
-      {!completedTest.length && !loadingTests && <strong>Вы не проходили тесты</strong>}
+      {!completedTest.length && !loadingTests && <strong>You did not pass the tests</strong>}
       {completedTest?.map(test => (
         <div key={test.testId} className="history-page__card banner">
           <h3>{test.testName}</h3>
-          <NavLink className="button" to={`/${historyPageId}/${test.testId}`}>Посмотреть</NavLink>
+          <NavLink className="button" to={`/${historyPageId}/${test.testId}`}>Check</NavLink>
         </div>
       ))}
     </div>
